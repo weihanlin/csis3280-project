@@ -3,12 +3,13 @@ CREATE DATABASE ParkingProject;
 use ParkingProject;
 
 CREATE TABLE User (
+    UserID INT AUTO_INCREMENT,
     FullName VARCHAR(50) NOT NULL ,
     Email VARCHAR(50) ,
     Password VARCHAR(128) NOT NULL ,
     PhoneNumber VARCHAR(20) NOT NULL ,
-    Manager BOOLEAN NOT NULL DEFAULT FALSE ,
-    PRIMARY KEY (Email)
+    Admin BOOLEAN NOT NULL DEFAULT FALSE ,
+    PRIMARY KEY (UserID)
 ) ENGINE = InnoDB;
 
 CREATE TABLE Location (
@@ -19,7 +20,7 @@ CREATE TABLE Location (
 ) ENGINE = InnoDB;
 
 CREATE TABLE Space (
-    SpaceID INT,
+    SpaceID INT AUTO_INCREMENT,
     LocationID INT,
     Price FLOAT,
     PRIMARY KEY (SpaceID, LocationID),
@@ -30,7 +31,7 @@ CREATE TABLE Space (
 
 CREATE TABLE Record (
     RecordID INT AUTO_INCREMENT,
-    Email VARCHAR(50) ,
+    UserID INT ,
     SpaceID INT ,
     LocationID INT ,
     StartedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
@@ -41,7 +42,7 @@ CREATE TABLE Record (
     CONSTRAINT fk_record_space FOREIGN KEY (SpaceID, LocationID) REFERENCES Space (SpaceID, LocationID)
         ON UPDATE CASCADE
         ON DELETE CASCADE ,
-    CONSTRAINT fk_record_user FOREIGN KEY (Email) REFERENCES User (Email)
+    CONSTRAINT fk_record_user FOREIGN KEY (UserID) REFERENCES User (UserID)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE = InnoDB;
