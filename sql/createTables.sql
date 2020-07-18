@@ -20,7 +20,7 @@ CREATE TABLE Location (
 ) ENGINE = InnoDB;
 
 CREATE TABLE Space (
-    SpaceID INT AUTO_INCREMENT,
+    SpaceID INT,
     LocationID INT,
     Price FLOAT,
     PRIMARY KEY (SpaceID, LocationID),
