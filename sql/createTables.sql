@@ -5,7 +5,7 @@ use ParkingProject;
 CREATE TABLE User (
     UserID INT AUTO_INCREMENT,
     FullName VARCHAR(50) NOT NULL ,
-    Email VARCHAR(50) ,
+    Email VARCHAR(50) NOT NULL ,
     Password VARCHAR(128) NOT NULL ,
     PhoneNumber VARCHAR(20) NOT NULL ,
     Admin BOOLEAN NOT NULL DEFAULT FALSE ,
