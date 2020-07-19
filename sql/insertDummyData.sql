@@ -1,3 +1,5 @@
+use parkingproject;
+
 insert into Location (ShortName, Address) values ('ALFRE', '71 Continental Alley');
 insert into Location (ShortName, Address) values ('NIKOL', '048 Welch Junction');
 insert into Location (ShortName, Address) values ('FILMO', '5 Ilene Junction');
