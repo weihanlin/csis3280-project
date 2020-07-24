@@ -53,12 +53,14 @@ table{
     border-collapse: collapse;
     padding: 5px;
     width: 100%;
+    
 }
 td, th{
     border-collapse: collapse;
     border-bottom: 1px solid rgb(126, 126, 126);
     padding: 5px;
-    text-align: left;
+    text-align:center;
+    
 }
 th{
     padding: 20px 5px;
@@ -86,6 +88,8 @@ input[type="submit"]{
     background-color: cadetblue;
 }
 
+
+
 .error{
     padding: 5px;
     background-color: aliceblue;
@@ -94,4 +98,23 @@ input[type="submit"]{
 }
 td{
     font-size: 0.8em;
+}
+
+
+.but{
+    display: block;
+    width: 175px;
+    height: 35px;
+    background: #4E9CAF;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.menu{
+    width:75%;
+    margin: 0 auto;
 }
