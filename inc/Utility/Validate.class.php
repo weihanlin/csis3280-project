@@ -3,6 +3,62 @@
 class Validate {
 
 
+    static function validateLocation(Location $target){
+
+        $target->setLocationID(filter_var($target->getLocationID(),FILTER_SANITIZE_NUMBER_INT));
+        if(!filter_var($target->getLocationID(),FILTER_VALIDATE_INT)) {
+            error_log("LocationID invalid:".$target->getLocationID()." ".__FILE__.":".__LINE__);
+            return false;
+        }
+
+        $target->setShortName(filter_var($target->getShortName(), FILTER_SANITIZE_STRING));
+        if($target->getShortName() == false || strlen($target->getShortName()) > 5
+                || preg_match_all('/(?![a-zA-Z\d])./', $target->getShortName())) {
+            error_log("ShortName invalid:".$target->getShortName()." ".__FILE__.":".__LINE__);
+            return false;
+        }
+
+        $addr = filter_var($target->getAddress(), FILTER_SANITIZE_STRING);
+        if($addr) {
+            preg_replace('/(?![a-zA-Z\d\s\-])./','', $addr);
+            $target->setAddress(strtolower($addr));
+        }
+        else {
+            error_log("Address invalid:".$target->getShortName()." ".__FILE__.":".__LINE__);
+            return false;
+        }
+
+        return true;
+
+    }
+
+
+    static function validateSpace(Space $target){
+
+        $target->setLocationID(filter_var($target->getLocationID(),FILTER_SANITIZE_NUMBER_INT));
+        if(!filter_var($target->getLocationID(),FILTER_VALIDATE_INT)) {
+            error_log("LocationID invalid:".$target->getLocationID()." ".__FILE__.":".__LINE__);
+            return false;
+        }
+
+        $target->setSpaceID(filter_var($target->getSpaceID(),FILTER_SANITIZE_NUMBER_INT));
+        if(!filter_var($target->getSpaceID(),FILTER_VALIDATE_INT)) {
+            error_log("SpaceID invalid:".$target->getSpaceID()." ".__FILE__.":".__LINE__);
+            return false;
+        }
+
+        $target->setPrice(filter_var($target->getPrice(),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
+        if(!filter_var($target->getPrice(),FILTER_VALIDATE_FLOAT)){
+            error_log("Unit Price invalid:".$target->getPrice()." ".__FILE__.":".__LINE__);
+            return false;
+        }
+
+
+        return true;
+
+    }
+
+
     static function validateSpaceForm() {
         $error = array();
 

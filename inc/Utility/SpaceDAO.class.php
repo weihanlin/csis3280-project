@@ -7,6 +7,11 @@ class SpaceDAO{
     }
 
     static function createSpace(Space $space) {
+
+        //Validate the input value is clean
+        if(!Validate::validateSpace($space))
+            return 0;
+
         $q = "INSERT INTO Space (SpaceID, LocationID, Price)".
             " VALUES(:sid, :lid, :price)";
 
@@ -16,6 +21,8 @@ class SpaceDAO{
         self::$db->bind(':price', $space->getPrice());
 
         self::$db->execute();
+
+        return self::$db->rowCount();
     }
 
     static function getSpace(int $sid, int $lid) {
@@ -46,11 +53,18 @@ class SpaceDAO{
 
 
     static function updateSpace(Space $s) {
+
+        //Validate the input value is clean
+        if(!Validate::validateSpace($s))
+            return 0;
+
         $q = "UPDATE Space SET Price =:price WHERE SpaceID =:sid AND LocationID =:lid";
         self::$db->query($q);
         self::$db->bind(':price',$s->getPrice());
         self::$db->bind(':sid', $s->getSpaceID());
         self::$db->bind(':lid',$s->getLocationID());
         self::$db->execute();
+
+        return self::$db->rowCount();
     }
 }

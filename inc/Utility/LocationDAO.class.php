@@ -27,6 +27,11 @@ class LocationDAO {
     }
 
     static function createLocation(Location $location) {
+
+        //Validate the input value is clean
+        if(!Validate::validateLocation($location))
+            return 0;
+
         $q = "INSERT INTO Location (ShortName, Address)".
             " VALUES(:name, :addr)";
 
@@ -35,15 +40,24 @@ class LocationDAO {
         self::$db->bind(':addr', $location->getAddress());
 
         self::$db->execute();
+
+        return self::$db->rowCount();
     }
 
     static function updateLocation(Location $location) {
+
+        //Validate the input value is clean
+        if(!Validate::validateLocation($location))
+            return 0;
+
         $q = "UPDATE Location SET ShortName =:name , Address =:addr WHERE LocationID =:lid";
         self::$db->query($q);
         self::$db->bind(':lid', $location->getLocationID());
         self::$db->bind(':name', $location->getShortName());
         self::$db->bind(':addr', $location->getAddress());
         self::$db->execute();
+
+        return self::$db->rowCount();
     }
 
     static function delLocation(int $lid) {
