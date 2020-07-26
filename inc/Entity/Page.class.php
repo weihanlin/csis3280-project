@@ -8,22 +8,53 @@ class Page {
         <html>
         <head>
             <meta charset="utf-8">
-            <meta name="author" content="Weihan">
             <title><?= self::$title ?></title>
             <link href="css/styles_001.css" rel="stylesheet">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         </head>
         <body>
             <header>
                 <h1><?= self::$title ?></h1>
             </header>
-            <article>
+
+
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Parking System</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+
+                        <!--  Hide this option if this session is not admin   -->
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="ManageLocations.php">Locations</a></li>
+                                <li><a href="ManageSpaces.php">Spaces</a></li>
+                            </ul>
+                        </li>
+                        <!--   End   -->
+
+                        <li><a href="#">Page 1</a></li>
+                        <li><a href="#">Page 2</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
 
         <?php
     }
 
     static function footer() {
         ?>
-            </article>
+
         </body>
         </html>
         <?php
