@@ -1,32 +1,46 @@
 <?php
 
-require ("inc/config.inc.php");
+require_once ("inc/config.inc.php");
 
-require ("inc/Entity/Location.class.php");
-require ("inc/Entity/Page.class.php");
+require_once ("inc/Entity/Location.class.php");
+require_once ("inc/Entity/Page.class.php");
 
-require ("inc/Utility/LocationDAO.class.php");
-require ("inc/Utility/PDOService.class.php");
+require_once ("inc/Utility/LocationDAO.class.php");
+require_once ("inc/Utility/PDOService.class.php");
+require_once ("inc/Utility/Validate.class.php");
+
+Page::$title = "Parking Space Management - Location";
+Page::header();
 
 LocationDAO::initialize();
 
+
 //process create
 if(!empty($_POST) && isset($_POST['action'])){
-    $nl = new Location();
 
-
-    $nl->setShortName($_POST['shortname']);
-    $nl->setAddress($_POST['addr']);
-
-    if($_POST['action'] == 'create')
-        LocationDAO::createLocation($nl);
-
-    if($_POST['action'] == 'edit') {
-        $nl->setLocationID($_POST['locationid']);
-        LocationDAO::updateLocation($nl);
+    $note = Validate::validateLocationForm();
+    if(count($note) > 0) {
+        foreach ($note as $value) {
+            echo "<div>{$value}</div>";
+        }
     }
+    else {
 
-    unset($nl);
+        $nl = new Location();
+
+        $nl->setShortName($_POST['shortname']);
+        $nl->setAddress($_POST['addr']);
+
+        if ($_POST['action'] == 'create')
+            LocationDAO::createLocation($nl);
+
+        if ($_POST['action'] == 'edit') {
+            $nl->setLocationID($_POST['locationid']);
+            LocationDAO::updateLocation($nl);
+        }
+
+        unset($nl);
+    }
 }
 
 //process delete
@@ -34,8 +48,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'delete') {
     LocationDAO::delLocation($_GET['lid']);
 }
 
-Page::$title = "Parking Space Management - Location";
-Page::header();
+
 
 $location = LocationDAO::getLocations();
 
