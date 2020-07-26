@@ -10,7 +10,7 @@ require ("inc/Utility/LocationDAO.class.php");
 require ("inc/Utility/SpaceDAO.class.php");
 require ("inc/Utility/PDOService.class.php");
 
-LocationDAO::initalize();
+LocationDAO::initialize();
 SpaceDAO::initialize();
 
 //process create
@@ -34,12 +34,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'delete') {
     SpaceDAO::delSpace($_GET['sid'],$_GET['lid']);
 }
 
-Page::$title = "Parking Space Management";
+Page::$title = "Parking Space Management - Space";
 Page::header();
 
 $location = LocationDAO::getLocations();
 $space = SpaceDAO::getSpaceList();
-Page::listData($space);
+Page::listSpaces($space);
 
 
 //process edit

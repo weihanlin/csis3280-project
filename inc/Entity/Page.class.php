@@ -29,7 +29,44 @@ class Page {
         <?php
     }
 
-    static function listData(Array $data) {
+    static function listLocations(Array $data) {
+        ?>
+        <section class="main">
+            <h2>Current Data</h2>
+            <table>
+                <thead><tr>
+                    <th>ID</th>
+                    <th>ShortName</th>
+                    <th>Address</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr></thead>
+                <?php
+                $i = 1;
+                foreach($data as $datum){
+                    if(($i%2) == 0)
+                        echo "<tr class='evenRow'>";
+                    else
+                        echo "<tr>";
+
+                    echo "<td>{$datum->getLocationID()}</td>";
+                    echo "<td>{$datum->getShortName()}</td>";
+                    echo "<td>{$datum->getAddress()}</td>";
+                    echo "<td><a href=?action=edit&lid={$datum->getLocationID()}>Edit</a></td>";
+                    echo "<td><a href=?action=delete&lid={$datum->getLocationID()}>Delete</a></td>";
+                    echo "</tr>";
+                    $i++;
+                }
+
+                ?>
+            </table>
+        </section>
+        <?php
+
+    }
+
+
+    static function listSpaces(Array $data) {
         ?>
         <section class="main">
             <h2>Current Data</h2>
@@ -65,6 +102,58 @@ class Page {
         <?php
 
     }
+
+    static function createLocationForm() {
+        ?>
+        <section class="form1">
+            <h2>Create Location</h2>
+            <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+                <table>
+                    <tr>
+                        <td>Short Name</td>
+                        <td><input type="text" name="shortname"></td>
+                    </tr>
+                    <tr>
+                        <td>Address</td>
+                        <td><input type="text" name="addr"></td>
+                    </tr>
+                </table>
+                <button type="submit" name="action" value="create">Add One</button>
+            </form>
+        </section>
+
+        <?php
+    }
+
+    static function editLocationForm(Location $target) {
+        ?>
+        <section class="form1">
+            <h2>Edit Location</h2>
+            <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+                <table>
+                    <tr>
+                        <td>Location ID</td>
+                        <td>
+                            <input name="locationid" value="<?= $target->getLocationID() ?>" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Short Name</td>
+                        <td><input type="text" name="shortname" value="<?= $target->getShortName() ?>" </td>
+                    </tr>
+                    <tr>
+                        <td>Address</td>
+                        <td><input type="text" name="addr" value="<?= $target->getAddress() ?>"></td>
+                    </tr>
+                </table>
+                <button value="edit" type="submit" name="action">Submit</button>
+                <button value="cancel" type="reset" name="action">Reset</button>
+            </form>
+        </section>
+
+        <?php
+    }
+
 
     static function createSpaceForm(Array $target) {
         ?>
@@ -134,7 +223,6 @@ class Page {
         </section>
 
         <?php
-
     }
 
 }
