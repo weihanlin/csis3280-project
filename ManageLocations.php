@@ -14,15 +14,17 @@ LocationDAO::initialize();
 if(!empty($_POST) && isset($_POST['action'])){
     $nl = new Location();
 
-    $nl->setLocationID($_POST['locationid']);
+
     $nl->setShortName($_POST['shortname']);
     $nl->setAddress($_POST['addr']);
 
     if($_POST['action'] == 'create')
         LocationDAO::createLocation($nl);
 
-    if($_POST['action'] == 'edit')
+    if($_POST['action'] == 'edit') {
+        $nl->setLocationID($_POST['locationid']);
         LocationDAO::updateLocation($nl);
+    }
 
     unset($nl);
 }
