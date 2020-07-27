@@ -21,6 +21,7 @@ if (!empty($_POST['email'])) {
 
             $_SESSION['email'] = $user->getEmail();
             if ($user->getManager()) {
+                $_SESSION['isAdmin'] = true;
                 header("Location: AdminProfile.php");
             } else {
                 header("Location: UserProfile.php");
