@@ -67,4 +67,45 @@ class SpaceDAO{
 
         return self::$db->rowCount();
     }
+
+
+    static function findSpaces($lid, $sid, $price) {
+
+        $lid = filter_var($lid, FILTER_SANITIZE_NUMBER_INT);
+        $sid = filter_var($sid, FILTER_SANITIZE_NUMBER_INT);
+        $price = filter_var($price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
+        $q = "SELECT * FROM Space as s JOIN Location as l ON s.LocationID = l.LocationID WHERE ";
+
+        if(!empty($lid))
+            $q = $q."s.LocationID =:lid AND ";
+
+        if(!empty($sid))
+            $q = $q."s.SpaceID =:sid AND ";
+
+        if(!empty($price))
+            $q = $q."s.Price =:price";
+
+        if(preg_match('/(AND )$/',$q))
+            $q = substr($q,0,strlen($q)-4);
+
+        if(preg_match('/(WHERE )$/',$q))
+            $q = substr($q,0,strlen($q)-6);
+
+        self::$db->query($q);
+
+        if(!empty($lid))
+            self::$db->bind(':lid',$lid);
+
+        if(!empty($sid))
+            self::$db->bind(':sid', $sid);
+
+        if(!empty($price))
+            self::$db->bind(':price',$price);
+
+
+        self::$db->execute();
+
+        return self::$db->resultSet();
+    }
 }

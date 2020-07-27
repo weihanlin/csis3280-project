@@ -66,4 +66,31 @@ class LocationDAO {
         self::$db->bind(':lid',$lid);
         self::$db->execute();
     }
+
+    static function findLocations($name, $addr) {
+
+        $name = filter_var($name,FILTER_SANITIZE_STRING);
+        $addr = filter_var($addr,FILTER_SANITIZE_STRING);
+
+        if(strlen($name) > 0 && strlen($addr) > 0) {
+            $q = "SELECT * FROM Location WHERE ShortName =:name AND Address =:addr";
+            self::$db->query($q);
+            self::$db->bind(':name',$name);
+            self::$db->bind(':addr',$addr);
+        } elseif (strlen($name) > 0) {
+            $q = "SELECT * FROM Location WHERE ShortName =:name";
+            self::$db->query($q);
+            self::$db->bind(':name',$name);
+        } elseif (strlen($addr) > 0) {
+            $q = "SELECT * FROM Location WHERE Address =:addr";
+            self::$db->query($q);
+            self::$db->bind(':addr',$addr);
+        } else {
+            $q = "SELECT * FROM Location";
+            self::$db->query($q);
+        }
+
+        self::$db->execute();
+        return self::$db->resultSet();
+    }
 }

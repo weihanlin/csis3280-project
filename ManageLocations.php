@@ -16,7 +16,7 @@ LocationDAO::initialize();
 
 
 //process create
-if(!empty($_POST) && isset($_POST['action'])){
+if(!empty($_POST) && isset($_POST['action']) && $_POST['action'] != 'search'){
 
     $note = Validate::validateLocationForm();
     if(count($note) > 0) {
@@ -34,7 +34,7 @@ if(!empty($_POST) && isset($_POST['action'])){
         if ($_POST['action'] == 'create')
             LocationDAO::createLocation($nl);
 
-        if ($_POST['action'] == 'edit') {
+        elseif ($_POST['action'] == 'edit') {
             $nl->setLocationID($_POST['locationid']);
             LocationDAO::updateLocation($nl);
         }
@@ -44,14 +44,16 @@ if(!empty($_POST) && isset($_POST['action'])){
 }
 
 //process delete
-
 if(isset($_GET['action']) && $_GET['action'] == 'delete') {
     LocationDAO::delLocation($_GET['lid']);
 }
-
 Page::confirmDeletion("Location");
 
-$location = LocationDAO::getLocations();
+//process search
+if(!empty($_POST) && isset($_POST['action']) && $_POST['action'] == 'search')
+    $location = LocationDAO::findLocations($_POST['shortname'], $_POST['addr']);
+else
+    $location = LocationDAO::getLocations();
 
 //process edit
 if(isset($_GET['action']) && $_GET['action'] == 'edit'){

@@ -128,6 +128,13 @@ class Page {
         ?>
         <section class="main">
             <h2>Current Data</h2>
+            <?php
+            if(count($data) == 0){
+                echo "<h3>Can not find related data.</h3>".
+                    "<a href='ManageLocations.php'>Back to the whole list</a></section>";
+                return;
+            }
+            ?>
             <table>
                 <thead><tr>
                     <th>ID</th>
@@ -170,6 +177,13 @@ class Page {
         ?>
         <section class="main">
             <h2>Current Data</h2>
+            <?php
+            if(count($data) == 0){
+                echo "<h3>Can not find related data.</h3>".
+                    "<a href='ManageSpaces.php'>Back to the whole list</a></section>";
+                return;
+            }
+            ?>
             <table>
                 <thead><tr>
                     <th>Location</th>
@@ -199,8 +213,6 @@ class Page {
                     echo "</tr>";
                     $i++;
                 }
-
-
                 ?>
             </table>
         </section>
@@ -211,7 +223,7 @@ class Page {
     static function createLocationForm() {
         ?>
         <section class="form1">
-            <h2>Create Location</h2>
+            <h2>Location</h2>
             <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
                 <table>
                     <tr>
@@ -224,6 +236,7 @@ class Page {
                     </tr>
                 </table>
                 <button type="submit" name="action" value="create">Add One</button>
+                <button type="submit" name="action" value="search">Search</button>
             </form>
         </section>
 
@@ -263,7 +276,7 @@ class Page {
     static function createSpaceForm(Array $target) {
         ?>
         <section class="form1">
-            <h2>Create Space</h2>
+            <h2>Space</h2>
             <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
                 <table>
                     <tr>
@@ -287,8 +300,8 @@ class Page {
                         <td><input type="number" step="0.01" name="price"></td>
                     </tr>
                 </table>
-
                 <button type="submit" name="action" value="create">Add One</button>
+                <button type="submit" name="action" value="search">Search</button>
             </form>
         </section>
 

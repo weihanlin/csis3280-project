@@ -19,7 +19,7 @@ SpaceDAO::initialize();
 
 
 //process create
-if(!empty($_POST) && isset($_POST['action'])){
+if(!empty($_POST) && isset($_POST['action']) && $_POST['action'] != 'search'){
 
     $note = Validate::validateSpaceForm();
     if(count($note) != 0){
@@ -51,7 +51,13 @@ Page::confirmDeletion("Space");
 
 
 $location = LocationDAO::getLocations();
-$space = SpaceDAO::getSpaceList();
+
+//process search
+if(!empty($_POST) && isset($_POST['action']) && $_POST['action'] == 'search')
+    $space = SpaceDAO::findSpaces($_POST['locationid'], $_POST['spaceid'], $_POST['price']);
+else
+    $space = SpaceDAO::getSpaceList();
+
 Page::listSpaces($space);
 
 
