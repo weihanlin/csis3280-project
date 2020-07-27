@@ -342,5 +342,68 @@ class Page {
 
         <?php
     }
+    
+    static function displayUserDetails(User $user) { ?>
+        <h1>User Details</h1>
+        <div>
+        Email Address:<?php echo $user->getEmail() ?><br>
+        Full Name: <?php echo ($user->getFullName()) ?><br>
+        Phone Number: <?php echo($user->getPhoneNumber()) ?><br>
 
+        <a href="<?php echo 'ManageLocations.php'?>">Manage your Locations</a>
+        <a href="<?php echo 'ManageSpaces.php'?>">Manage your Spaces</a>
+        <a href="<?php echo 'parkingLogout.php'?>">Logout</a>
+        </div>
+        <?php }
+
+    static function displayLogin() { ?>
+    <form action="" method="POST">
+    <h2>Please sign in</h2>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required autofocus>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required>
+    <input type="submit" value="Login">
+    </form>
+    <br>
+
+        Don't have any account? <a href="<?php echo 'parkingRegistration.php'?>">Click here</a> to register.
+
+    <?php }
+    static function displayRegistrationForm() { ?>
+    
+        Have an account?<a href="<?php echo "parkingLogin.php"?>"> Please login</a>.
+        <section class="form">
+        <h1> Please Fill in the Form</h1>
+        <form action="" method="post">
+        <table>
+        <tr>
+            <td align="right"><label for="email">E-mail address</label></td>
+            <td align="left"><input type="email" name="email" required></td>
+        </tr>
+        <tr>
+            <td align="right"><label for="password">Password</label></td>
+            <td align="left"><input type="password" name="password" required></td>
+        </tr>
+        <tr>
+            <td align="right"><label for="password_confirm">Confirm Password</label></td>
+            <td align="left"><input type="password" name="password_confirm" required></td>
+        </tr>
+        <tr>
+            <td align="right"><label for="fullname">Full Name</label></td>
+            <td align="left"><input type="text" name="fullname" required></td>
+        </tr>
+        <tr>
+            <td align="right"><label for="phone">Phone Number</label></td>
+            <td align="left"><input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+        <td></td>
+            <td align="right"><input type="submit" value="Register"></td>
+        </tr>
+        </table>
+    </form>
+        <?php }
 }
