@@ -45,5 +45,12 @@ return self::$db->rowCount();
         return self::$db->getResultSet();
     }
     
-    
+    static function setAdmin(string $email, bool $manager){
+        $select = "UPDATE User SET Manager = :manager WHERE email = :email;";
+        self::$db->query($select);
+        self::$db->bind(':manager', $manager);
+        self::$db->bind(':email', $email);
+        self::$db->execute();
+        return;
+    }
 }
