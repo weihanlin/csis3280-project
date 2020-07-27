@@ -9,39 +9,36 @@ require_once("inc/Utility/LoginManager.class.php");
 require_once("inc/Utility/UserDAO.class.php");
 
 
-if(!empty($_POST['email'])){
+if (!empty($_POST['email'])) {
 
     UserDAO::initialize();
     $user = UserDAO::getUser($_POST['email']);
-    if($user instanceof User){
+    if ($user instanceof User) {
 
-        if($user->verifyPassword($_POST['password'])){
+        if ($user->verifyPassword($_POST['password'])) {
 
             session_start();
 
             $_SESSION['email'] = $user->getEmail();
-
-            header("Location: UserProfile.php");
-        }
-        else{
+            if ($user->getManager()) {
+                header("Location: AdminProfile.php");
+            } else {
+                header("Location: UserProfile.php");
+            }
+        } else {
             Page::header();
-            echo("Invalid Email/Password");
+            echo ("Invalid Email/Password");
             Page::displayLogin();
             Page::footer();
         }
-    }
-    else{
+    } else {
         Page::header();
-        echo("Invalid User, Please Register an Account");
+        echo ("Invalid User, Please Register an Account");
         Page::displayLogin();
         Page::footer();
     }
-    }  
-
-else{
-Page::header();
-Page::displayLogin();
-Page::footer();
+} else {
+    Page::header();
+    Page::displayLogin();
+    Page::footer();
 }
-
-?>
