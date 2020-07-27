@@ -47,7 +47,7 @@ if(!empty($_POST) && isset($_POST['action'])){
 if(isset($_GET['action']) && $_GET['action'] == 'delete') {
     SpaceDAO::delSpace($_GET['sid'],$_GET['lid']);
 }
-
+Page::confirmDeletion("Space");
 
 
 $location = LocationDAO::getLocations();

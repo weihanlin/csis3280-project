@@ -60,6 +60,70 @@ class Page {
         <?php
     }
 
+    static function confirmDeletion($type) {
+        ?>
+
+        <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>You are going to delete a <?= $type ?>, and it can not be reversed.</p>
+                        <p class="info"></p>
+                        <p>Do you want to proceed?</p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger btn-ok">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php
+            if(!strcmp($type,"Location")) {
+                ?>
+                <script>
+                    $('#confirm-delete').on('show.bs.modal', function(e) {
+                        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+
+                        $('.info').html(
+                            "Location ID: " + $(e.relatedTarget).data('locid') + " <br>" +
+                            "ShortName: " + $(e.relatedTarget).data('name') + " <br>" +
+                            "Address: " + $(e.relatedTarget).data('addr') + " <br>"
+                        );
+                    });
+                </script>
+                <?php
+            } elseif(!strcmp($type,"Space")){
+                ?>
+                <script>
+                    $('#confirm-delete').on('show.bs.modal', function(e) {
+                        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+
+                        $('.info').html(
+                            "Location ID: " + $(e.relatedTarget).data('locid') + " <br>" +
+                            "ShortName: " + $(e.relatedTarget).data('name') + " <br>" +
+                            "Space ID: " + $(e.relatedTarget).data('spid') + " <br>"
+                        );
+                    });
+                </script>
+                <?php
+            }
+        ?>
+
+
+
+        <?php
+    }
+
+
     static function listLocations(Array $data) {
         ?>
         <section class="main">
@@ -84,7 +148,12 @@ class Page {
                     echo "<td>{$datum->getShortName()}</td>";
                     echo "<td>{$datum->getAddress()}</td>";
                     echo "<td><a href=?action=edit&lid={$datum->getLocationID()}>Edit</a></td>";
-                    echo "<td><a href=?action=delete&lid={$datum->getLocationID()}>Delete</a></td>";
+                    echo "<td><a href='#' data-locid='{$datum->getLocationID()}'
+                                        data-name='{$datum->getShortName()}'
+                                        data-addr='{$datum->getAddress()}'
+                                        data-href='?action=delete&lid={$datum->getLocationID()}'
+                                        data-toggle='modal' data-target='#confirm-delete'>Delete</a></td>";
+
                     echo "</tr>";
                     $i++;
                 }
@@ -121,7 +190,12 @@ class Page {
                     echo "<td>{$datum->getSpaceID()}</td>";
                     echo "<td>\$ {$datum->getPrice()}</td>";
                     echo "<td><a href=?action=edit&sid={$datum->getSpaceID()}&lid={$datum->getLocationID()}>Edit</a></td>";
-                    echo "<td><a href=?action=delete&sid={$datum->getSpaceID()}&lid={$datum->getLocationID()}>Delete</a></td>";
+                    echo "<td><a href='#' data-locid='{$datum->getLocationID()}'
+                                        data-name='{$datum->getShortName()}'
+                                        data-spid='{$datum->getSpaceID()}'
+                                        data-href='?action=delete&sid={$datum->getSpaceID()}&lid={$datum->getLocationID()}'
+                                        data-toggle='modal' data-target='#confirm-delete'>Delete</a></td>";
+
                     echo "</tr>";
                     $i++;
                 }

@@ -44,14 +44,14 @@ if(!empty($_POST) && isset($_POST['action'])){
 }
 
 //process delete
+
 if(isset($_GET['action']) && $_GET['action'] == 'delete') {
     LocationDAO::delLocation($_GET['lid']);
 }
 
-
+Page::confirmDeletion("Location");
 
 $location = LocationDAO::getLocations();
-
 
 //process edit
 if(isset($_GET['action']) && $_GET['action'] == 'edit'){
