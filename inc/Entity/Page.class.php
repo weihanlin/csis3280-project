@@ -367,7 +367,7 @@ class Page {
     </form>
     <br>
 
-        Don't have any account? <a href="<?php echo 'parkingRegistration.php'?>">Click here</a> to register.
+        Don't have an account? <a href="<?php echo 'parkingRegistration.php'?>">Click here</a> to register.
 
     <?php }
     static function displayRegistrationForm() { ?>
