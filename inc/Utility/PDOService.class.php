@@ -86,4 +86,9 @@ class PDOService {
     public function lastInsertedId() {
         return $this->_pstmt->lastInsertId();
     }
+
+    //This function will return result as json format
+    public function getJSON() {
+        return json_encode($this->_pstmt->fetchAll(PDO::FETCH_ASSOC));
+    }
 }
