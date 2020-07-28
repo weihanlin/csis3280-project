@@ -293,11 +293,11 @@ class Page {
                     </tr>
                     <tr>
                         <td>Space ID</td>
-                        <td><input type="number" name="spaceid"></td>
+                        <td><input type="number" min="1" name="spaceid"></td>
                     </tr>
                     <tr>
                         <td>Unit Price</td>
-                        <td><input type="number" step="0.01" name="price"></td>
+                        <td><input type="number" min="0" step="0.01" name="price"></td>
                     </tr>
                 </table>
                 <button type="submit" name="action" value="create">Add One</button>
@@ -328,11 +328,11 @@ class Page {
                     </tr>
                     <tr>
                         <td>Space ID</td>
-                        <td><input type="number" name="spaceid" value="<?= $target->getSpaceID() ?>" readonly></td>
+                        <td><input type="number" name="spaceid" min="1" value="<?= $target->getSpaceID() ?>" readonly></td>
                     </tr>
                     <tr>
                         <td>Unit Price</td>
-                        <td><input type="number" step="0.01" name="price" value="<?= $target->getPrice() ?>"></td>
+                        <td><input type="number" step="0.01" min="0" name="price" value="<?= $target->getPrice() ?>"></td>
                     </tr>
                 </table>
                 <button value="edit" type="submit" name="action">Submit</button>

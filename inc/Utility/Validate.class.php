@@ -6,7 +6,7 @@ class Validate {
     static function validateLocation(Location $target){
 
         $target->setLocationID(filter_var($target->getLocationID(),FILTER_SANITIZE_NUMBER_INT));
-        if(!filter_var($target->getLocationID(),FILTER_VALIDATE_INT)) {
+        if(!filter_var($target->getLocationID(),FILTER_VALIDATE_INT) ||  $target->getLocationID() < 1) {
             error_log("LocationID invalid:".$target->getLocationID()." ".__FILE__.":".__LINE__);
             return false;
         }
@@ -36,19 +36,19 @@ class Validate {
     static function validateSpace(Space $target){
 
         $target->setLocationID(filter_var($target->getLocationID(),FILTER_SANITIZE_NUMBER_INT));
-        if(!filter_var($target->getLocationID(),FILTER_VALIDATE_INT)) {
+        if(!filter_var($target->getLocationID(),FILTER_VALIDATE_INT) || $target->getLocationID() < 1) {
             error_log("LocationID invalid:".$target->getLocationID()." ".__FILE__.":".__LINE__);
             return false;
         }
 
         $target->setSpaceID(filter_var($target->getSpaceID(),FILTER_SANITIZE_NUMBER_INT));
-        if(!filter_var($target->getSpaceID(),FILTER_VALIDATE_INT)) {
+        if(!filter_var($target->getSpaceID(),FILTER_VALIDATE_INT) || $target->getSpaceID() < 1) {
             error_log("SpaceID invalid:".$target->getSpaceID()." ".__FILE__.":".__LINE__);
             return false;
         }
 
         $target->setPrice(filter_var($target->getPrice(),FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION));
-        if(!filter_var($target->getPrice(),FILTER_VALIDATE_FLOAT)){
+        if(filter_var($target->getPrice(),FILTER_VALIDATE_FLOAT)===false || $target->getPrice() < 0){
             error_log("Unit Price invalid:".$target->getPrice()." ".__FILE__.":".__LINE__);
             return false;
         }
@@ -64,15 +64,22 @@ class Validate {
 
         if($_POST['action'] == 'create') {
             if (filter_input(INPUT_POST, 'spaceid', FILTER_VALIDATE_INT)) {
-                $sp = SpaceDAO::getSpace($_POST['spaceid'], $_POST['locationid']);
-                if (is_object($sp))
-                    $error[] = "Failed: Space ID is duplicated";
+                if($_POST['spaceid'] < 1)
+                    $error[] = "Failed: Space ID is invalid";
+                else {
+                    $sp = SpaceDAO::getSpace($_POST['spaceid'], $_POST['locationid']);
+                    if (is_object($sp))
+                        $error[] = "Failed: Space ID is duplicated";
+                }
             } else
                 $error[] = "Failed: Invalid Space ID";
         }
 
-        if(!filter_input(INPUT_POST,'price',FILTER_VALIDATE_FLOAT)) {
+        if(filter_input(INPUT_POST,'price',FILTER_VALIDATE_FLOAT) === false) {
             $error[] = "Failed: Invalid Unit Price";
+        } else {
+            if($_POST['price'] < 0)
+                $error[] = "Failed: Unit Price can not be negative";
         }
 
         return $error;
