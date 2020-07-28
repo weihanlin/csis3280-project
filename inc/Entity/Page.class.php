@@ -350,8 +350,8 @@ class Page {
         Full Name: <?php echo ($user->getFullName()) ?><br>
         Phone Number: <?php echo($user->getPhoneNumber()) ?><br>
 
-        <a href="<?php echo 'ManageLocations.php'?>">Manage your Locations</a>
-        <a href="<?php echo 'ManageSpaces.php'?>">Manage your Spaces</a>
+        <a href="<?php echo 'ManageLocations.php'?>">Manage your Locations</a><br>
+        <a href="<?php echo 'ManageSpaces.php'?>">Manage your Spaces</a><br>
         <a href="<?php echo 'parkingLogout.php'?>">Logout</a>
         </div>
         <?php }
