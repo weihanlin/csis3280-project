@@ -17,6 +17,7 @@ LoginManager::verifyAdmin();
 
 
     Page::header();
+    echo "<a href=\"UserProfile.php\">Click here to see your profile</a>";
     if(!empty($_GET)){
         if($_GET['action']=="add"){
             UserDAO::setAdmin($_GET['id'], true);
