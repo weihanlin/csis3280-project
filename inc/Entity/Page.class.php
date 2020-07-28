@@ -135,14 +135,18 @@ class Page {
                 return;
             }
             ?>
+
+            <script src="script\sort-table.js"></script>
+
             <table>
                 <thead><tr>
-                    <th>ID</th>
-                    <th>ShortName</th>
-                    <th>Address</th>
+                    <th onclick="sortcol(1)">ID</th>
+                    <th onclick="sortcol(2)">ShortName</th>
+                    <th onclick="sortcol(3)">Address</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr></thead>
+                <tbody id="restable">
                 <?php
                 $i = 1;
                 foreach($data as $datum){
@@ -166,6 +170,7 @@ class Page {
                 }
 
                 ?>
+                </tbody>
             </table>
         </section>
         <?php
@@ -184,14 +189,17 @@ class Page {
                 return;
             }
             ?>
+            <script src="script\sort-table.js"></script>
+
             <table>
                 <thead><tr>
-                    <th>Location</th>
-                    <th>ID</th>
-                    <th>Unit Price</th>
+                    <th onclick="sortcol(1)">Location</th>
+                    <th onclick="sortcol(2)">ID</th>
+                    <th onclick="sortcol(3)">Unit Price</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr></thead>
+                <tbody id="restable">
                 <?php
                 $i = 1;
                 foreach($data as $datum){
@@ -214,6 +222,7 @@ class Page {
                     $i++;
                 }
                 ?>
+                </tbody>
             </table>
         </section>
         <?php
