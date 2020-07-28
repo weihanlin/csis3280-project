@@ -42,7 +42,7 @@ return self::$db->rowCount();
         $select = "SELECT * FROM User ORDER BY UserID";
         self::$db->query($select);
         self::$db->execute();
-        return self::$db->getResultSet();
+        return self::$db-resultSet();
     }
     
     static function setAdmin(string $email, bool $manager){
