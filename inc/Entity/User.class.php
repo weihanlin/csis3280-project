@@ -45,7 +45,12 @@ class User {
         return $this->PhoneNumber;
     }
     function getManager(){
-        return $this->Manager;
+       if(Manager == 1|| Manager == true){
+          return true;
+       }
+       else{
+          return false;
+       }
     }
 
 
