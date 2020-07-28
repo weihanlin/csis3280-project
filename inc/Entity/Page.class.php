@@ -138,23 +138,18 @@ class Page {
 
             <script src="script\sort-table.js"></script>
 
-            <table>
+            <table class="table table-hover table-striped">
                 <thead><tr>
-                    <th onclick="sortcol(1)">ID</th>
-                    <th onclick="sortcol(2)">ShortName</th>
-                    <th onclick="sortcol(3)">Address</th>
+                    <th onclick="sortcol(1)">ID   <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
+                    <th onclick="sortcol(2)">ShortName   <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
+                    <th onclick="sortcol(3)">Address   <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr></thead>
                 <tbody id="restable">
                 <?php
-                $i = 1;
                 foreach($data as $datum){
-                    if(($i%2) == 0)
-                        echo "<tr class='evenRow'>";
-                    else
-                        echo "<tr>";
-
+                    echo "<tr>";
                     echo "<td>{$datum->getLocationID()}</td>";
                     echo "<td>{$datum->getShortName()}</td>";
                     echo "<td>{$datum->getAddress()}</td>";
@@ -166,7 +161,6 @@ class Page {
                                         data-toggle='modal' data-target='#confirm-delete'>Delete</a></td>";
 
                     echo "</tr>";
-                    $i++;
                 }
 
                 ?>
@@ -191,23 +185,19 @@ class Page {
             ?>
             <script src="script\sort-table.js"></script>
 
-            <table>
+            <table class="table table-hover table-striped">
                 <thead><tr>
-                    <th onclick="sortcol(1)">Location</th>
-                    <th onclick="sortcol(2)">ID</th>
-                    <th onclick="sortcol(3)">Unit Price</th>
+                    <th onclick="sortcol(1)">Location   <span class="glyphicon glyphicon-sort" aria-hidden="true"></th>
+                    <th onclick="sortcol(2)">Space ID   <span class="glyphicon glyphicon-sort" aria-hidden="true"></th>
+                    <th onclick="sortcol(3)">Unit Price   <span class="glyphicon glyphicon-sort" aria-hidden="true"></th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr></thead>
                 <tbody id="restable">
                 <?php
-                $i = 1;
-                foreach($data as $datum){
-                    if(($i%2) == 0)
-                        echo "<tr class='evenRow'>";
-                    else
-                        echo "<tr>";
 
+                foreach($data as $datum){
+                    echo "<tr>";
                     echo "<td>{$datum->getShortName()}</td>";
                     echo "<td>{$datum->getSpaceID()}</td>";
                     echo "<td>\$ {$datum->getPrice()}</td>";
@@ -217,9 +207,7 @@ class Page {
                                         data-spid='{$datum->getSpaceID()}'
                                         data-href='?action=delete&sid={$datum->getSpaceID()}&lid={$datum->getLocationID()}'
                                         data-toggle='modal' data-target='#confirm-delete'>Delete</a></td>";
-
                     echo "</tr>";
-                    $i++;
                 }
                 ?>
                 </tbody>
@@ -234,18 +222,22 @@ class Page {
         <section class="form1">
             <h2>Location</h2>
             <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
-                <table>
-                    <tr>
-                        <td>Short Name</td>
-                        <td><input type="text" name="shortname"></td>
-                    </tr>
-                    <tr>
-                        <td>Address</td>
-                        <td><input type="text" name="addr"></td>
-                    </tr>
-                </table>
-                <button type="submit" name="action" value="create">Add One</button>
-                <button type="submit" name="action" value="search">Search</button>
+                <div class="form-group">
+                        <label>Short Name</label>
+                        <input class="form-control" type="text" name="shortname">
+                </div>
+                <div class="form-group">
+                        <label>Address</label>
+                        <input class="form-control" type="text" name="addr">
+                </div>
+                <div class="btn-group btn-group-justified" role="group">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default" type="submit" name="action" value="create">Add One</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default" type="submit" name="action" value="search">Search</button>
+                    </div>
+                </div>
             </form>
         </section>
 
@@ -257,24 +249,26 @@ class Page {
         <section class="form1">
             <h2>Edit Location</h2>
             <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
-                <table>
-                    <tr>
-                        <td>Location ID</td>
-                        <td>
-                            <input name="locationid" value="<?= $target->getLocationID() ?>" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Short Name</td>
-                        <td><input type="text" name="shortname" value="<?= $target->getShortName() ?>" </td>
-                    </tr>
-                    <tr>
-                        <td>Address</td>
-                        <td><input type="text" name="addr" value="<?= $target->getAddress() ?>"></td>
-                    </tr>
-                </table>
-                <button value="edit" type="submit" name="action">Submit</button>
-                <button value="cancel" type="reset" name="action">Reset</button>
+                <div class="form-group">
+                    <label>Location ID</label>
+                    <input class="form-control" name="locationid" value="<?= $target->getLocationID() ?>" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Short Name</label>
+                    <input class="form-control" type="text" name="shortname" value="<?= $target->getShortName() ?>">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input class="form-control" type="text" name="addr" value="<?= $target->getAddress() ?>">
+                </div>
+                <div class="btn-group btn-group-justified" role="group">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default" value="edit" type="submit" name="action">Submit</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default" value="cancel" type="reset" name="action">Reset</button>
+                    </div>
+                </div>
             </form>
         </section>
 
@@ -284,13 +278,13 @@ class Page {
 
     static function createSpaceForm(Array $target) {
         ?>
+
         <section class="form1">
             <h2>Space</h2>
             <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
-                <table>
-                    <tr>
-                        <td>Location</td>
-                        <td>
+                <div class="form-group">
+                    <label>Location</label>
+
                             <select name="locationid">
                                 <?php
                                     foreach ($target as $item) {
@@ -298,19 +292,23 @@ class Page {
                                     }
                                 ?>
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Space ID</td>
-                        <td><input type="number" min="1" name="spaceid"></td>
-                    </tr>
-                    <tr>
-                        <td>Unit Price</td>
-                        <td><input type="number" min="0" step="0.01" name="price"></td>
-                    </tr>
-                </table>
-                <button type="submit" name="action" value="create">Add One</button>
-                <button type="submit" name="action" value="search">Search</button>
+                </div>
+                <div class="form-group">
+                    <label>Space ID</label>
+                    <input class="form-control" type="number" min="1" name="spaceid">
+                </div>
+                <div class="form-group">
+                    <label>Unit Price</label>
+                    <input class="form-control" type="number" min="0" step="0.01" name="price">
+                </div>
+                <div class="btn-group btn-group-justified" role="group">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default" type="submit" name="action" value="create">Add One</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default" type="submit" name="action" value="search">Search</button>
+                    </div>
+                </div>
             </form>
         </section>
 
@@ -322,30 +320,33 @@ class Page {
         <section class="form1">
             <h2>Edit Space</h2>
             <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
-                <table>
-                    <tr>
-                        <td>Location</td>
-                        <td>
+                <div class="form-group">
+                        <label>Location</label>
                             <input name="locationid" value="<?= $target->getLocationID() ?>" hidden>
-                            <input type="text" name="shortname" value="<?php
+                            <input class="form-control"  type="text" name="shortname" value="<?php
                             foreach ($parameter as $item) {
                                 if($target->getLocationID() == $item->getLocationID())
                                     echo $item->getShortName();
                             }
                             ?>" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Space ID</td>
-                        <td><input type="number" name="spaceid" min="1" value="<?= $target->getSpaceID() ?>" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>Unit Price</td>
-                        <td><input type="number" step="0.01" min="0" name="price" value="<?= $target->getPrice() ?>"></td>
-                    </tr>
-                </table>
-                <button value="edit" type="submit" name="action">Submit</button>
-                <button value="cancel" type="reset" name="action">Reset</button>
+
+                </div>
+                <div class="form-group">
+                        <label>Space ID</label>
+                        <input class="form-control"  type="number" name="spaceid" min="1" value="<?= $target->getSpaceID() ?>" readonly>
+                </div>
+                <div class="form-group">
+                        <label>Unit Price</label>
+                        <input class="form-control"  type="number" step="0.01" min="0" name="price" value="<?= $target->getPrice() ?>">
+                </div>
+                <div class="btn-group btn-group-justified" role="group">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default" value="edit" type="submit" name="action">Submit</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default" value="cancel" type="reset" name="action">Reset</button>
+                    </div>
+                </div>
             </form>
         </section>
 
@@ -445,7 +446,7 @@ class Page {
                                     echo "<td>Yes</td>";
                                 }
                                 else{
-                                    echo"<td>No</td";
+                                    echo"<td>No</td>";
                                 }
             
 

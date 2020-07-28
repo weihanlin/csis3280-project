@@ -8,7 +8,7 @@ body{
     background-color: lightgray;
     border: 1px solid rgb(54, 54, 54);
     display: table;
-    width: 90%;
+    width: 100%;
     margin: auto;
     min-height: 900px;
     padding: 20px;
@@ -17,8 +17,8 @@ body{
 article{
     padding: 10px;/*
     display: grid;
-    grid-template-columns: 70% 30%; 
-    grid-template-rows: 850px;              
+    grid-template-columns: 70% 30%;
+    grid-template-rows: 850px;
     */
 }
 section{
@@ -50,7 +50,7 @@ h2{
     font-family: Helvetica, Arial, sans-serif;
 }
 table{
-    
+
     border-collapse: collapse;
     padding: 5px;
     width: 100%;
@@ -69,7 +69,7 @@ thead{
     background-color: cadetblue;
     font-size: bigger;
     line-height: 1.5em;
-    
+
 }
 .evenRow{
     background-color: ghostwhite;
@@ -78,8 +78,8 @@ input{
     margin-bottom: 5px;
     line-height: 1.2em;
 }
-input[type="submit"]{  
-    margin: 10px;              
+input[type="submit"]{
+    margin: 10px;
     padding: 5px;
     width: 90%;
     font-size: 1.2em;

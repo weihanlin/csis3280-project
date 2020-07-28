@@ -75,7 +75,8 @@ Page::header();
             g_xaxis.call(xaxis);
             g_yaxis.call(yaxis);
 
-            d3.select("#scount").insert("select","div").on("change", function () {
+            d3.select("#scount").insert("select","div").attr("class","dropdown")
+                .on("change", function () {
                 const sel = d3.select(this).node().value;
                 switch (sel){
                     case "Ascending":
