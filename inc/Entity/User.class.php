@@ -51,7 +51,7 @@ class User {
 
     function verifyPassword(string $passwordToVerify){
 
-        if(password_verify($passwordToVerify, $this->password)){
+        if(password_verify($passwordToVerify, $this->Password)){
             return true;
         }
         else{
