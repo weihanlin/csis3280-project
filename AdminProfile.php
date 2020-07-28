@@ -12,9 +12,22 @@ require_once("inc/Utility/UserDAO.class.php");
 session_start();
 LoginManager::verifyLogin();
 LoginManager::verifyAdmin();
+
     UserDAO::initialize();
-    $user = UserDAO::getAllUsers();
+
+
     Page::header();
+    if(!empty($_GET)){
+        if($_GET['action']=="add"){
+            UserDAO::setAdmin($_GET['id'], true);
+            echo"User ".$_GET['id']." was added to Admin";
+        }
+        if($_GET['action']=="remove"){
+            UserDAO::setAdmin($_GET['id'], false);
+            echo"User ".$_GET['id']." was removed from Admin";
+        }
+    }
+    $user = UserDAO::getAllUsers();
     Page::displayUsers($user);
     Page::footer();
 
