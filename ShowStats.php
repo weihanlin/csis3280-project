@@ -8,21 +8,21 @@ Page::header();
 
 
 ?>
+
+    <section id="scount">
+        <div id="spaceCount"></div>
+    </section>
+    <section id="savg">
+        <div id="spaceAvg"></div>
+    </section>
+
     <script src="https://d3js.org/d3.v5.min.js"></script>
-
-    <section>
-    <div class="stats" id="spaceCount"></div>
-    </section>
-    <section>
-    <div class="stats" id="spaceAvg"></div>
-    </section>
-
     <script>
         const margin = {top: 60, right: 60, bottom: 10, left: 120};
         const width = 600 - margin.left - margin.right;
         const height = 400 - margin.top - margin.bottom;
 
-        const svg = d3.selectAll(".stats").append("svg")
+        const svg = d3.selectAll("section div").append("svg")
                         .attr('width', width + margin.left + margin.right)
                         .attr('height', height + margin.top + margin.bottom);
 
@@ -36,12 +36,16 @@ Page::header();
         const yaxis = d3.axisLeft().scale(yscale);
 
 
+        const options = ["Alphabetical","Ascending","Descending",];
+
+
         d3.json("data.php?q=sum").then((json) => {
 
             d3.select("#spaceCount svg")
                 .append("text").text("Total Spaces for each parking lot").attr("x", 0).attr("y", margin.top/2);
 
-            xscale.domain([0, d3.max(json, (d) => parseInt(d.Count))]);
+            const maxv = d3.max(json, (d) => parseInt(d.Count));
+            xscale.domain([0, maxv]);
             yscale.domain(json.map((d)=>d.ShortName));
 
 
@@ -51,10 +55,12 @@ Page::header();
                 .attr("width", (d)=>xscale(d.Count))
                 .attr("y", (d)=>yscale(d.ShortName));
 
-            rect.on("mouseover", function() {d3.select(this).attr("fill","orange")})
-                .on("mouseout", function() {d3.select(this).attr("fill","black")});
+            rect.on("mouseover",function(){d3.select(this).attr("fill","orange")})
+                .on("mouseout",function(){d3.select(this).transition("colorfade")
+                                            .duration(250).attr("fill",(d)=>d3.interpolateBlues(d.Count/maxv))})
+                .attr("fill",(d)=>d3.interpolateBlues(d.Count/maxv));
 
-            d3.select("#spaceCount svg g").selectAll("text").data(json).join("text")
+            const label = d3.select("#spaceCount svg g").selectAll("text").data(json).join("text")
                 .text((d)=>d.Count)
                 .attr("text-anchor","middle")
                 .attr("x", (d)=>xscale(d.Count) + 10)
@@ -69,6 +75,32 @@ Page::header();
             g_xaxis.call(xaxis);
             g_yaxis.call(yaxis);
 
+            d3.select("#scount").insert("select","div").on("change", function () {
+                const sel = d3.select(this).node().value;
+                switch (sel){
+                    case "Ascending":
+                        json.sort((a,b)=>d3.ascending(a.Count, b.Count));
+                        break;
+                    case "Descending":
+                        json.sort((a,b)=>d3.descending(a.Count, b.Count));
+                        break;
+                    case "Alphabetical":
+                        json.sort((a,b)=>a.ShortName.localeCompare(b.ShortName));
+                        break;
+                }
+
+                xscale.domain([0, d3.max(json, (d) => parseInt(d.Count))]);
+                yscale.domain(json.map((d)=>d.ShortName));
+
+                rect.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName));
+                label.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName)+yscale.bandwidth()/2)
+                    .attr("x",(d,i)=>xscale(d.Count) + 10);
+                g_yaxis.transition().duration(500).call(yaxis).selectAll(".tick");
+
+            })
+                    .selectAll("option").data(options).enter().append("option")
+                    .attr("value",(d)=>d)
+                    .text((d)=>d);
         });
 
 
@@ -77,7 +109,8 @@ Page::header();
             d3.select("#spaceAvg svg")
                 .append("text").text("Average Unit Price for each parking lot").attr("x", 0).attr("y", margin.top/2);
 
-            xscale.domain([0, d3.max(json, (d) => parseFloat(d.Avg))]);
+            const maxv = d3.max(json, (d) => parseFloat(d.Avg));
+            xscale.domain([0, maxv]);
             yscale.domain(json.map((d)=>d.ShortName));
 
             const rect = d3.select("#spaceAvg svg g").selectAll("rect").data(json).join("rect")
@@ -86,10 +119,12 @@ Page::header();
                 .attr("width", (d)=>xscale(d.Avg))
                 .attr("y", (d)=>yscale(d.ShortName));
 
-            rect.on("mouseover", function() {d3.select(this).attr("fill","orange")})
-                .on("mouseout", function() {d3.select(this).attr("fill","black")});
+            rect.on("mouseover",function(){d3.select(this).attr("fill","orange")})
+                .on("mouseout",function(){d3.select(this).transition("colorfade")
+                    .duration(250).attr("fill",(d)=>d3.interpolateBlues(d.Avg/maxv))})
+                .attr("fill",(d)=>d3.interpolateBlues(d.Avg/maxv));
 
-            d3.select("#spaceAvg svg g").selectAll("text").data(json).join("text")
+            const label = d3.select("#spaceAvg svg g").selectAll("text").data(json).join("text")
                 .text((d)=>d3.format("$.2f")(d.Avg))
                 .attr("text-anchor","middle")
                 .attr("x", (d)=>xscale(d.Avg) + 30)
@@ -102,6 +137,33 @@ Page::header();
 
             g_xaxis.call(xaxis);
             g_yaxis.call(yaxis);
+
+            d3.select("#savg").insert("select","div").on("change", function () {
+                const sel = d3.select(this).node().value;
+                switch (sel){
+                    case "Ascending":
+                        json.sort((a,b)=>d3.ascending(a.Avg, b.Avg));
+                        break;
+                    case "Descending":
+                        json.sort((a,b)=>d3.descending(a.Avg, b.Avg));
+                        break;
+                    case "Alphabetical":
+                        json.sort((a,b)=>a.ShortName.localeCompare(b.ShortName));
+                        break;
+                }
+
+                xscale.domain([0, d3.max(json, (d) => parseFloat(d.Avg))]);
+                yscale.domain(json.map((d)=>d.ShortName));
+
+                rect.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName));
+                label.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName)+yscale.bandwidth()/2)
+                    .attr("x",(d,i)=>xscale(d.Avg) + 30);
+                g_yaxis.transition().duration(500).call(yaxis).selectAll(".tick");
+
+            })
+                .selectAll("option").data(options).enter().append("option")
+                .attr("value",(d)=>d)
+                .text((d)=>d);
 
         });
 
