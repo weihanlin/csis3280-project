@@ -406,4 +406,48 @@ class Page {
         </table>
     </form>
         <?php }
+    static function displayUsers(Array $user) {
+                ?>
+
+                    <section>
+                    <h2>All users</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Is Manager?</th>
+                                <th>Remove Manager</th>
+                                <th>Make manager</th>
+
+                        </thead>
+                        <?php
+            
+                            
+                            foreach($user as $u)  {
+                                echo "<tr>";
+                                echo "<td>" .$u->getID(). "</td>";
+                                echo "<td>" .$u->getFullName(). "</td>";
+                                echo "<td>" .$u->getEmail(). "</td>";
+                                echo "<td>" .$u->getPhoneNumber(). "</td>";
+                                if($u->getManager()==true){
+                                    echo "<td>Yes</td>";
+                                }
+                                else{
+                                    echo"<td>No</td";
+                                }
+            
+
+                                echo "<td><a href=\"".$_SERVER['PHP_SELF']."?action=remove&id=".$u->getEmail()."\">Remove</td>";
+
+                                echo "<td><a href=\"".$_SERVER['PHP_SELF']."?action=add&id=".$u->getEmail()."\">Add</td>";
+                                echo "</tr>";
+                            } 
+                    
+                    echo '</table>
+                        </section>';
+              
+                }
 }
