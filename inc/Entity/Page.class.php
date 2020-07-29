@@ -27,9 +27,11 @@ class Page {
                         <a class="navbar-brand" href="#">Parking System</a>
                     </div>
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
+                        <li class="active"><a href="UserProfile.php">Home</a></li>
 
                         <!--  Hide this option if this session is not admin   -->
+                        <?php if($_SESSION['isAdmin]==true) { ?>
+                        <li><a href="AdminProfile.php">Manage Admins</a></li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage
                                 <span class="caret"></span></a>
@@ -38,6 +40,7 @@ class Page {
                                 <li><a href="ManageSpaces.php">Spaces</a></li>
                             </ul>
                         </li>
+                        <?php } ?>
                         <!--   End   -->
 
                         <li><a href="ShowStats.php">Statistic</a></li>
