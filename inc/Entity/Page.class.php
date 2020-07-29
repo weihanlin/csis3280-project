@@ -30,7 +30,7 @@ class Page {
                         <li class="active"><a href="UserProfile.php">Home</a></li>
 
                         <!--  Hide this option if this session is not admin   -->
-                        <?php if($_SESSION['isAdmin]==true) { ?>
+                        <?php if($_SESSION['isAdmin']==true) { ?>
                         <li><a href="AdminProfile.php">Manage Admins</a></li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage
