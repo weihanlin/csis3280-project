@@ -30,7 +30,7 @@ class Page {
                         <li class="active"><a href="UserProfile.php">Home</a></li>
 
                         <!--  Hide this option if this session is not admin   -->
-                        <?php if($_SESSION['isAdmin']==true) { ?>
+                        <?php if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']==true) { ?>
                         <li><a href="AdminProfile.php">Manage Admins</a></li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage
@@ -47,7 +47,7 @@ class Page {
                         <li><a href="#">Page 2</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        <li><a href="parkingLogout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                     </ul>
                 </div>
             </nav>
@@ -363,9 +363,6 @@ class Page {
         Full Name: <?php echo ($user->getFullName()) ?><br>
         Phone Number: <?php echo($user->getPhoneNumber()) ?><br>
 
-        <a href="<?php echo 'ManageLocations.php'?>">Manage your Locations</a><br>
-        <a href="<?php echo 'ManageSpaces.php'?>">Manage your Spaces</a><br>
-        <a href="<?php echo 'parkingLogout.php'?>">Logout</a>
         </div>
         <?php }
 
