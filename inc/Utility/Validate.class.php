@@ -106,9 +106,10 @@ class Validate {
 
 
 static function validator(){
+ //validator for registration
     $isCorrect = true;
     $header = 0;
-
+//check if email correct
         if(!filter_var($_POST['email'], FILTER_SANITIZE_EMAIL)){
             $isCorrect = false;
             if($header == 0){
@@ -118,7 +119,7 @@ static function validator(){
             echo nl2br("Email is invalid");
 
         }
-
+//check if password length is under 8
         if(strlen($_POST['password']) < 8){
             $isCorrect = false;
             if($header == 0){
@@ -127,7 +128,7 @@ static function validator(){
             }
             echo nl2br("Password must be longer than 8 characters\n");
         }
-
+//check if passwords match
         if($_POST['password']!=$_POST['password_confirm']){
             $isCorrect = false;
             if($header == 0){
@@ -138,7 +139,7 @@ static function validator(){
         };
     
 
-
+//check if name contains characters other than letters and spaces
     if (!preg_match("/^[a-zA-Z ]*$/",$_POST['fullname'])) {
         $isCorrect = false;
         if($header == 0){

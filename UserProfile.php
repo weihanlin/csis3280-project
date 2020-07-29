@@ -13,8 +13,9 @@ session_start();
 
 LoginManager::verifyLogin();
 
-UserDAO::initialize();
+    UserDAO::initialize();
     $user = UserDAO::getUser($_SESSION['email']);
+    Page::$title = "User Profile";
     Page::header();
     Page::displayUserDetails($user);
     Page::footer();
