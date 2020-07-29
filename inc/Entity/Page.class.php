@@ -46,9 +46,13 @@ class Page {
                         <li><a href="ShowStats.php">Statistic</a></li>
                         <li><a href="#">Page 2</a></li>
                     </ul>
+                    <!-- Hide if not logged in -->
+                    <?php if(isset($_SESSION)){?>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="parkingLogout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                     </ul>
+                    <?php } ?>
+                     <!--   End   -->
                 </div>
             </nav>
 
@@ -418,7 +422,7 @@ class Page {
         <?php }
     static function displayUsers(Array $user) {
                 ?>
-
+ <!--   For Admins Only   -->
                     <section>
                     <h2>All users</h2>
                     <table>
