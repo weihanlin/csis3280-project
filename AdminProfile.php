@@ -15,7 +15,7 @@ LoginManager::verifyAdmin();
 
     UserDAO::initialize();
 
-
+    Page::$title = "Modify Admin Permissions";
     Page::header();
     if(!empty($_GET)){
         if($_GET['action']=="add"){
