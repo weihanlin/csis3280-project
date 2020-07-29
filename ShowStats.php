@@ -9,17 +9,22 @@ Page::header();
 
 ?>
 
-    <section id="scount">
-        <div id="spaceCount"></div>
-    </section>
-    <section id="savg">
-        <div id="spaceAvg"></div>
-    </section>
+
+    <div class="row" style="margin: auto">
+        <section id="scount" >
+            <div id="spaceCount"></div>
+        </section>
+    </div>
+    <div class="row" style="margin: auto">
+        <section id="savg">
+            <div id="spaceAvg"></div>
+        </section>
+    </div>
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script>
-        const margin = {top: 60, right: 60, bottom: 10, left: 120};
-        const width = 600 - margin.left - margin.right;
+        const margin = {top: 60, right: 60, bottom: 1, left: 120};
+        const width = 800 - margin.left - margin.right;
         const height = 400 - margin.top - margin.bottom;
 
         const svg = d3.selectAll("section div").append("svg")
@@ -80,10 +85,10 @@ Page::header();
                 const sel = d3.select(this).node().value;
                 switch (sel){
                     case "Ascending":
-                        json.sort((a,b)=>d3.ascending(a.Count, b.Count));
+                        json.sort((a,b)=>d3.ascending(+a.Count, +b.Count));
                         break;
                     case "Descending":
-                        json.sort((a,b)=>d3.descending(a.Count, b.Count));
+                        json.sort((a,b)=>d3.descending(+a.Count, +b.Count));
                         break;
                     case "Alphabetical":
                         json.sort((a,b)=>a.ShortName.localeCompare(b.ShortName));
@@ -143,10 +148,10 @@ Page::header();
                 const sel = d3.select(this).node().value;
                 switch (sel){
                     case "Ascending":
-                        json.sort((a,b)=>d3.ascending(a.Avg, b.Avg));
+                        json.sort((a,b)=>d3.ascending(+a.Avg, +b.Avg));
                         break;
                     case "Descending":
-                        json.sort((a,b)=>d3.descending(a.Avg, b.Avg));
+                        json.sort((a,b)=>d3.descending(+a.Avg, +b.Avg));
                         break;
                     case "Alphabetical":
                         json.sort((a,b)=>a.ShortName.localeCompare(b.ShortName));
