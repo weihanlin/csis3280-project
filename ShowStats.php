@@ -70,10 +70,10 @@ Page::header();
                 .text((d)=>d.Count)
                 .attr("text-anchor","middle")
                 .attr("x", (d)=>xscale(d.Count) + 10)
-                .attr("y", (d)=>yscale(d.ShortName)+yscale.bandwidth()/2)
+                .attr("y", (d)=>yscale(d.ShortName)+yscale.bandwidth()-2)
                 .attr("fill","black");
 
-            xaxis.ticks(d3.max(json, (d) => d.Count),"f");
+            // xaxis.ticks(d3.max(json, (d) => d.Count),"f");
 
             const g_xaxis = d3.select("#spaceCount svg g").append("g").attr("class","x axis");
             const g_yaxis = d3.select("#spaceCount svg g").append("g").attr("class","y axis");
@@ -100,7 +100,7 @@ Page::header();
                 yscale.domain(json.map((d)=>d.ShortName));
 
                 rect.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName));
-                label.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName)+yscale.bandwidth()/2)
+                label.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName)+yscale.bandwidth()-2)
                     .attr("x",(d,i)=>xscale(d.Count) + 10);
                 g_yaxis.transition().duration(500).call(yaxis).selectAll(".tick");
 
@@ -135,7 +135,7 @@ Page::header();
                 .text((d)=>d3.format("$.2f")(d.Avg))
                 .attr("text-anchor","middle")
                 .attr("x", (d)=>xscale(d.Avg) + 30)
-                .attr("y", (d)=>yscale(d.ShortName)+yscale.bandwidth()/2)
+                .attr("y", (d)=>yscale(d.ShortName)+yscale.bandwidth()-2)
                 .attr("fill","black");
 
             xaxis.ticks(d3.max(json, (d) => parseFloat(d.Avg)), "f");
@@ -163,7 +163,7 @@ Page::header();
                 yscale.domain(json.map((d)=>d.ShortName));
 
                 rect.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName));
-                label.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName)+yscale.bandwidth()/2)
+                label.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName)+yscale.bandwidth() - 2)
                     .attr("x",(d,i)=>xscale(d.Avg) + 30);
                 g_yaxis.transition().duration(500).call(yaxis).selectAll(".tick");
 
