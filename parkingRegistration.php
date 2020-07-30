@@ -8,7 +8,10 @@ require_once("inc/Utility/PDOService.class.php");
 require_once("inc/Utility/UserDAO.class.php");
 require_once("inc/Utility/Validate.class.php");
 
-
+session_start();
+if(isset($_SESSION['email'])){
+    header("Location: UserProfile.php");
+}
 if(!empty($_POST)){
     if(Validate::validator()){
         UserDAO::initialize();
