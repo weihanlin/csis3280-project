@@ -452,11 +452,14 @@ class Page {
                                 else{
                                     echo"<td>No</td>";
                                 }
-            
-
+                                if($_SESSION['email'] == $u->getEmail()){
+                                    echo"<td></td><td></td>";
+                                }
+                                else{
                                 echo "<td><a href=\"".$_SERVER['PHP_SELF']."?action=remove&id=".$u->getEmail()."\">Remove</td>";
 
                                 echo "<td><a href=\"".$_SERVER['PHP_SELF']."?action=add&id=".$u->getEmail()."\">Add</td>";
+                                }
                                 echo "</tr>";
                             } 
                     
