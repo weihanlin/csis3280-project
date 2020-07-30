@@ -8,6 +8,10 @@ require_once("inc/Utility/PDOService.class.php");
 require_once("inc/Utility/LoginManager.class.php");
 require_once("inc/Utility/UserDAO.class.php");
 
+session_start();
+if(isset($_SESSION['email'])){
+    header("Location: UserProfile.php");
+}
 
 if (!empty($_POST['email'])) {
 
@@ -16,8 +20,6 @@ if (!empty($_POST['email'])) {
     if ($user instanceof User) {
 
         if ($user->verifyPassword($_POST['password'])) {
-
-            session_start();
 
             $_SESSION['email'] = $user->getEmail();
             if ($user->getManager()) {
