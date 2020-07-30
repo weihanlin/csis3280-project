@@ -27,7 +27,7 @@ class Page {
                         <a class="navbar-brand" href="#">Parking System</a>
                     </div>
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
+                        <li class="active"><a href="indexReservation.php">Home</a></li>
 
                         <!--  Hide this option if this session is not admin   -->
                         <li class="dropdown">
@@ -41,7 +41,7 @@ class Page {
                         <!--   End   -->
 
                         <li><a href="ShowStats.php">Statistic</a></li>
-                        <li><a href="#">Page 2</a></li>
+                        <li><a href="reservationHistory.php">History</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
@@ -459,4 +459,207 @@ class Page {
                         </section>';
               
                 }
+/*Reservation pages*/
+static function getSelectForm($locations,$selected=''){
+    ?>
+       <section class="form1">              
+                        <h2 style="text-align: center;">Select a Location</h2>                        
+                        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" style="display: block; text-align: center;">
+                            <div class="form-group">
+                            <select name="loc" id="loc" size="4">
+                                <?php
+                                    foreach($locations as $lo)  {
+                                    echo "<option value=\"".$lo->getLocationID()."\">".$lo->getShortName()."</option>";
+                                    }                                    
+                                    echo "<option value=\"all\" selected>All</option>";                                                                    
+                                ?>
+                            </select>
+                            </div>
+                            <div class="form-group">                                                    
+                            <button type="submit" name="action" value="Filter">Filter</button>                                                    
+                            </div>
+                        </form>                                    
+    
+    <?php
 }
+
+
+static function currentReservation(){
+    //Colocar aqui codigo para mostrar situacion actual del usuario
+}
+
+
+static function getOrderData($locations, $spaces){
+    ?>
+                <!-- Start the page's data form -->
+    <section class="main" style="width:70%">
+
+        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" style="display: block; text-align: center;">
+        <h2>Reserve your parking space</h2>
+        <tr>
+        <td><label for="lo">Choose your Location:</label>
+        <select name="lo" id="lo">
+        <?php
+            foreach($locations as $lo)  {
+            echo "<option value=\"".$lo->getLocationID()."\">".$lo->getShortName()."</option>";
+            }                                                                    
+            ?>
+        </select></td>
+        <td>  <label for="id"> Type your parking space:</label>
+        <input type="text" id="id" name="id" maxlength="7" size="7" required>
+        </td>
+        <td>
+        <button type="submit" name="action" value="reserve">Reserve</button>        
+        </tr>
+        <table>
+        </table>
+        </form>
+
+                    <h3 style="text-align:center;">  
+                        <?php
+                            echo "All Parking Available :"
+                        ?> 
+                    </h3>
+                    <table>
+                        <?php
+                                   echo "<thead>";
+                                    echo "<tr>";
+                                        echo "<th>Number</th>";
+                                        
+                                        echo "<th>Location</th>";
+                                        echo "<th>No Space</th>";
+                                        echo "<th>Action</th>";                                       
+                                echo "</thead>";    
+                                
+                                $i=1;    
+                                                               
+                                                       
+ 
+                                foreach($spaces as $space)  {
+                                    if($i%2==0){
+                                        echo "<tr class=\"oddRow\">";                            
+                                    }
+                                    else{
+                                        echo "<tr class=\"evenRow\">";
+                                    }
+                                    
+                                    echo "<td>".$i."</td>";
+                                    echo"<td>".$space->ShortName."</td>";
+                                    echo"<td>".$space->getSpaceID()."</td>";
+                                    echo "<td><a href=\"".$_SERVER["PHP_SELF"]."?action=reserve&id=".$space->getSpaceID()."&lo=".$space->getLocationID()."\">Reserve</td>";
+                                    echo "</tr>";
+                                    $i++;
+                                }
+
+
+                        ?>
+                    </table>
+                    <!--<h3>Tienes una reservacion activa</h3>    -->
+                    
+            </section>  
+                
+    <?php   
+        
+}
+
+//Record module 
+static function getHistoryData($spaces, $catID=NULL){
+?>
+            <!-- Start the page's data form -->
+            <section class="table" style="width:80%">
+                
+                <h3>  
+                    <?php
+                        echo "This is your reservation history"
+                    ?> 
+                </h3>
+                <table>
+                    <?php
+                               echo "<thead>";
+                                echo "<tr>";
+                                    echo "<th width=4%> # </th>";                                        
+                                    echo "<th>ID reserv.</th>";
+                                    echo "<th>Location</th>";
+                                    echo "<th>Space</th>";                                       
+                                    echo "<th>Started At</th>";                                       
+                                    echo "<th>Ended At</th>";
+                                    echo "<th>Status</th>";
+                                    echo "<th>Amount</th>";
+                                    echo "<th>Action</th>";                                       
+                            echo "</thead>";    
+                            
+                            $i=1;                                                                                                                          
+
+                            foreach($spaces as $space)  {
+                                if($i%2==0){
+                                    echo "<tr class=\"oddRow\">";                            
+                                }
+                                else{
+                                    echo "<tr class=\"evenRow\">";
+                                }
+                              
+                                echo "<td>".$i."</td>";
+                                echo"<td>".$space->getRecordID()."</td>";
+                                echo"<td>".$space->ShortName."</td>";
+                                echo"<td>".$space->getSpaceID()."</td>";
+                                echo"<td style='color:red;'>".$space->getStartedAt()."</td>";
+                                echo"<td style='color:green;'>".$space->getEndedAt()."</td>";
+                                
+                                echo"<td>".$space->getPaid()."</td>";
+
+                                if ($space->getPaid()=="Reservated"){
+                                    echo"<td>".$space->temp_paid."</td>";
+                                }else{
+                                    echo"<td>".$space->getAmount()."</td>";    
+                                }                                                                                            
+
+                                if($space->getPaid()=="Reservated"){
+                                    echo "<td><a href=\"".$_SERVER["PHP_SELF"]."?action=paid&id=".$space->getRecordID()."\" style=\"color:green; font-weight: bold;\">PAID</td>";
+                                }else{
+                                    echo "<td><a href=\"".$_SERVER["PHP_SELF"]."?action=delete&id=".$space->getRecordID()."\" style=\"color:red; font-weight: bold;\">DELETE</td>";
+                                }
+                                
+                                echo "</tr>";
+                                $i++;
+                                
+                            }
+
+
+                    ?>
+                </table>
+                <!--<h3>Tienes una reservacion activa</h3>    -->
+            </section>  
+            
+<?php   
+    
+}
+
+//Last reservation of User
+static function statusUser(Record $data, User $user){
+
+    
+    echo "</br><p style='text-align:center'>Welcome back ".$user->getFullName()."</p>";
+    if($data->pending==0){
+        echo "<p style='color:green; text-align:center;'>No tienes pendientes</p>";
+    }else{
+        if($data->pending==1){
+        echo "<p style='color:red ; text-align:center;'>you have ".$data->pending." pending reservation.</p>";
+        }else
+        {
+        echo "<p style='color:red ; text-align:center;'>you have ".$data->pending." pending reservations.</p>";
+        }
+    }
+    if($data->lastdate==NULL){
+    echo "</br><p style='text-align:center'>This will be your first reservation</p>";
+    }else{
+        echo "</br><p style='text-align:center'>Your last reservation was:<br> ".$data->lastdate."</p>";
+    }
+    echo "</section>";
+
+}
+
+
+}
+
+?>
+
