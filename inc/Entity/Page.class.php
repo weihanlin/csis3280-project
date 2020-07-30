@@ -292,7 +292,7 @@ class Page {
                 <div class="form-group">
                     <label>Location</label>
 
-                            <select name="locationid">
+                            <select class="form-control" name="locationid">
                                 <?php
                                     foreach ($target as $item) {
                                         echo "<option value={$item->getLocationID()}>{$item->getShortName()}</option>>";
