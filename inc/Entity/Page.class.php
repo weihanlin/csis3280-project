@@ -452,7 +452,7 @@ class Page {
                                 else{
                                     echo"<td>No</td>";
                                 }
-                                if($_SESSION['email'] == $u->getEmail()){
+                                if($_SESSION['email'] == $u->getEmail()||$u->getID()==1){
                                     echo"<td></td><td></td>";
                                 }
                                 else{
