@@ -104,6 +104,7 @@ static function validator(){
     $isCorrect = true;
     $header = 0;
 //check if email correct
+    if(isset($_POST['email'])){
         if(!filter_var($_POST['email'], FILTER_SANITIZE_EMAIL)){
             $isCorrect = false;
             if($header == 0){
@@ -113,6 +114,7 @@ static function validator(){
             echo nl2br("Email is invalid");
 
         }
+    }
 //check if password length is under 8
         if(strlen($_POST['password']) < 8){
             $isCorrect = false;
