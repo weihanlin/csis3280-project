@@ -2,6 +2,7 @@
 require_once ("inc/config.inc.php");
 require_once ("inc/Entity/Page.class.php");
 
+session_start();
 
 Page::$title="Parking Space Statistic";
 Page::header();

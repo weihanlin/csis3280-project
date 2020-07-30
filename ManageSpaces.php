@@ -10,6 +10,12 @@ require_once ("inc/Utility/LocationDAO.class.php");
 require_once ("inc/Utility/SpaceDAO.class.php");
 require_once ("inc/Utility/PDOService.class.php");
 require_once ("inc/Utility/Validate.class.php");
+//for checking login session
+require_once("inc/Utility/LoginManager.class.php");
+session_start();
+LoginManager::verifyLogin();
+LoginManager::verifyAdmin();
+
 
 Page::$title = "Parking Space Management - Space";
 Page::header();

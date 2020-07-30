@@ -47,7 +47,7 @@ class Page {
                         <li><a href="#">Page 2</a></li>
                     </ul>
                     <!-- Hide if not logged in -->
-                    <?php if(isset($_SESSION)){?>
+                    <?php if(isset($_SESSION['email'])) {?>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="parkingLogout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                     </ul>
