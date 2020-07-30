@@ -5,12 +5,6 @@ class Validate {
 
     static function validateLocation(Location $target){
 
-        $target->setLocationID(filter_var($target->getLocationID(),FILTER_SANITIZE_NUMBER_INT));
-        if(!filter_var($target->getLocationID(),FILTER_VALIDATE_INT) ||  $target->getLocationID() < 1) {
-            error_log("LocationID invalid:".$target->getLocationID()." ".__FILE__.":".__LINE__);
-            return false;
-        }
-
         $target->setShortName(filter_var($target->getShortName(), FILTER_SANITIZE_STRING));
         if($target->getShortName() == false || strlen($target->getShortName()) > 5
                 || preg_match_all('/(?![a-zA-Z\d])./', $target->getShortName())) {
