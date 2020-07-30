@@ -18,6 +18,7 @@ LoginManager::verifyLogin();
     Page::$title = "User Profile";
     Page::header();
     Page::displayUserDetails($user);
+    ?><a href="UserEdit.php"> Edit Profile</a><br><a href="ChangePassword.php">Change Password</a><?php
     Page::footer();
 
 ?>

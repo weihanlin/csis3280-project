@@ -16,7 +16,7 @@ if(!empty($_POST)){
     if(Validate::validator()){
         UserDAO::initialize();
         $u = new User;
-        $u->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
+        $u->setPassword($_POST['password']);
         $u->setEmail($_POST['email']);
         $u->setFullName($_POST['fullname']);
         $u->setPhoneNumber($_POST['phonenumber']);
