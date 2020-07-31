@@ -115,6 +115,7 @@ static function validator(){
 
         }
     }
+
 //check if password length is under 8
         if(strlen($_POST['password']) < 8){
             $isCorrect = false;
@@ -124,6 +125,7 @@ static function validator(){
             }
             echo nl2br("Password must be longer than 8 characters\n");
         }
+        if(isset($_POST['password_confirm'])){
 //check if passwords match
         if($_POST['password']!=$_POST['password_confirm']){
             $isCorrect = false;
@@ -133,9 +135,10 @@ static function validator(){
             }
             echo nl2br("Passwords do not match\n");
         };
-    
+        }
 
 //check if name contains characters other than letters and spaces
+if(isset($_POST['fullname'])){
     if (!preg_match("/^[a-zA-Z ]*$/",$_POST['fullname'])) {
         $isCorrect = false;
         if($header == 0){
@@ -144,7 +147,7 @@ static function validator(){
         }
         echo nl2br("Only letters and white space allowed in Full Name\n");
       }
-
+    }
     return $isCorrect;
   }
 }
