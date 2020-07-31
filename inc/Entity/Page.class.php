@@ -27,15 +27,17 @@ class Page {
                         <a class="navbar-brand" href="#">Parking System</a>
                     </div>
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="UserProfile.php">Home</a></li>
+                        <li class="active"><a href="indexReservation.php">Home</a></li>
+                        <li><a href="UserProfile.php">Profile</a></li>
 
                         <!--  Hide this option if this session is not admin   -->
                         <?php if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']==true) { ?>
-                        <li><a href="AdminProfile.php">Manage Admins</a></li>
+                        
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
+                                <li><a href="AdminProfile.php">Manage Admins</a></li>
                                 <li><a href="ManageLocations.php">Locations</a></li>
                                 <li><a href="ManageSpaces.php">Spaces</a></li>
                             </ul>
@@ -44,7 +46,7 @@ class Page {
                         <!--   End   -->
 
                         <li><a href="ShowStats.php">Statistic</a></li>
-                        <li><a href="#">Page 2</a></li>
+                        <li><a href="reservationHistory.php">History</a></li>
                     </ul>
                     <!-- Hide if not logged in -->
                     <?php if(isset($_SESSION['email'])) {?>
@@ -420,7 +422,7 @@ class Page {
         </table>
     </form>
         <?php }
-    static function displayUsers(Array $user) {
+static function displayUsers(Array $user) {
                 ?>
  <!--   For Admins Only   -->
                     <section>
@@ -467,7 +469,7 @@ class Page {
                         </section>';
               
                 }
-                    static function editUser(User $user)
+                   static function editUser(User $user)
                 {  ?>
 
                     <section>
@@ -518,4 +520,320 @@ class Page {
             </form>
             <?php
             }
+
+/*Reservation pages*/
+
+static function getSelectForm($locations,$selected=''){
+    ?>
+       <section class="form1">
+                        <h2 style="text-align: center;">Select a Location</h2>
+                        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" style="display: block; text-align: center;">
+                            <div class="form-group">
+                            <select name="loc" id="loc" size="4">
+                                <?php
+                                    foreach($locations as $lo)  {
+                                        if($selected == $lo->getLocationID()){
+                                            echo "<option value=\"".$lo->getLocationID()."\" selected>".$lo->getShortName()."</option>";
+                                        }
+                                        else{
+                                            echo "<option value=\"".$lo->getLocationID()."\">".$lo->getShortName()."</option>";
+                                        }
+
+                                    }
+                                    if($selected=='all'||$selected==null){
+                                        echo "<option value=\"all\" selected>All</option>";
+                                    }else{
+                                        echo "<option value=\"all\">ALL</option>";
+                                    }
+
+                                ?>
+                            </select>
+                            </div>
+                            <div class="form-group">
+                            <button type="submit" name="action" value="Filter">Filter</button>
+                            </div>
+                        </form>
+
+    <?php
+}
+
+
+static function getOrderData($locations, $spaces){
+    ?>
+
+<!-- Start Reservation confirmation modal -->
+<div class="modal fade" id="confirm-reserve" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Paid</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>You will make a reservation.</p>
+                        <p>Do you want to proceed?</p>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-success btn-ok">Reserve</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- End of Modal -->
+
+
+
+                <!-- Start the page's data form -->
+    <section class="main" style="width:70%">
+
+        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" style="display: block; text-align: center;">
+        <h2>Reserve your parking space</h2>
+        <tr>
+        <td><label for="lo">Choose your Location:</label>
+        <select name="lo" id="lo">
+        <?php
+            foreach($locations as $lo)  {
+            echo "<option value=\"".$lo->getLocationID()."\">".$lo->getShortName()."</option>";
+            }
+            ?>
+        </select></td>
+        <td>  <label for="id"> Type your parking space:</label>
+        <input type="text" id="id" name="id" maxlength="7" size="7" required>
+        </td>
+        <td>
+        <button type="submit" name="action" value="reserve" onclick="return confirm('Are you sure you want to reserve this space?');">Reserve</button>
+        </tr>
+        <table>
+        </table>
+        </form>
+
+                    <h3 style="text-align:center;">
+                        <?php
+                            echo "All Parking Available :"
+                        ?>
+                    </h3>
+                    <table>
+                        <?php
+                                   echo "<thead>";
+                                    echo "<tr>";
+                                        echo "<th>Number</th>";
+
+                                        echo "<th>Location</th>";
+                                        echo "<th>No Space</th>";
+                                        echo "<th>Action</th>";
+                                echo "</thead>";
+
+                                $i=1;
+
+
+
+                                foreach($spaces as $space)  {
+                                    if($i%2==0){
+                                        echo "<tr class=\"oddRow\">";
+                                    }
+                                    else{
+                                        echo "<tr class=\"evenRow\">";
+                                    }
+
+                                    echo "<td>".$i."</td>";
+                                    echo"<td>".$space->ShortName."</td>";
+                                    echo"<td>".$space->getSpaceID()."</td>";
+                                    echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=reserve&id=".$space->getSpaceID()."&lo=".$space->getLocationID()."\" data-toggle=\"modal\" data-target=\"#confirm-reserve\">Reserve</td>";
+                                    echo "</tr>";
+                                    $i++;
+                                }
+
+
+                        ?>
+                    </table>
+
+            </section>
+
+            <!-- script for modal of creating a new reservation -->
+            <script>
+        $('#confirm-reserve').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+
+            $('.debug-url').html('Reserve URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+        });
+    </script>
+
+
+
+    <?php
+
+}
+
+//Record module
+static function getHistoryData($spaces, $catID=NULL){
+?>
+    <!-- Start Delete confirmation modal -->
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>You are about to delete the record, this procedure is irreversible.</p>
+                        <p>Do you want to proceed?</p>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger btn-ok">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- End of Modal -->
+
+
+    <!-- Start Paid confirmation modal -->
+    <div class="modal fade" id="confirm-paid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Paid</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>You will pay the reservation, this procedure is irreversible.</p>
+                        <p>Do you want to proceed?</p>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary btn-ok">Pay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- End of Modal -->
+
+
+            <!-- Start the page's data form -->
+            <section class="table" style="width:100%;">
+
+                <h3>
+                    <?php
+                        echo "This is your reservation history"
+                    ?>
+                </h3>
+                <table>
+                    <?php
+                               echo "<thead>";
+                                echo "<tr>";
+                                    echo "<th width=4%> # </th>";
+                                    echo "<th>ID reserv.</th>";
+                                    echo "<th>Location</th>";
+                                    echo "<th>Space</th>";
+                                    echo "<th>Started At</th>";
+                                    echo "<th>Ended At</th>";
+                                    echo "<th>Status</th>";
+                                    echo "<th>Amount</th>";
+                                    echo "<th>Action</th>";
+                            echo "</thead>";
+
+                            $i=1;
+
+                            foreach($spaces as $space)  {
+                                if($i%2==0){
+                                    echo "<tr class=\"oddRow\">";
+                                }
+                                else{
+                                    echo "<tr class=\"evenRow\">";
+                                }
+
+                                echo "<td>".$i."</td>";
+                                echo"<td>".$space->getRecordID()."</td>";
+                                echo"<td>".$space->ShortName."</td>";
+                                echo"<td>".$space->getSpaceID()."</td>";
+                                echo"<td style='color:red;'>".$space->getStartedAt()."</td>";
+                                echo"<td style='color:green;'>".$space->getEndedAt()."</td>";
+
+                                echo"<td>".$space->getPaid()."</td>";
+
+                                if ($space->getPaid()=="Reserved"){
+                                    echo"<td> $ ".sprintf('%.2f', $space->temp_paid)."</td>";
+                                }else{
+                                    echo"<td> $ ".sprintf('%.2f', $space->getAmount())."</td>";
+                                }
+
+                                if($space->getPaid()=="Reserved"){
+                                    echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=paid&id=".$space->getRecordID()."\" style=\"color:green; font-weight: bold;\" data-toggle=\"modal\" data-target=\"#confirm-paid\">PAID</td>";
+                                }else{
+                                    echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=delete&id=".$space->getRecordID()."\" style=\"color:red; font-weight: bold;\" data-toggle=\"modal\" data-target=\"#confirm-delete\">DELETE</td>";
+                                }
+
+                                echo "</tr>";
+                                $i++;
+
+                            }
+
+
+                    ?>
+                </table>
+
+            </section>
+
+            <!-- script for modal of update and elimination of reservation -->
+    <script>
+        $('#confirm-delete').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+
+            $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+        });
+
+        $('#confirm-paid').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+
+            $('.debug-url').html('Paid URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+        });
+    </script>
+
+<?php
+
+}
+
+//Last reservation of User
+static function statusUser(Record $data, User $user){
+
+
+    echo "</br><p style='text-align:center'>Welcome back ".$user->getFullName()."</p>";
+    if($data->pending==0){
+        echo "<p style='color:green; text-align:center;'>You don't have pending reservations</p>";
+    }else{
+        if($data->pending==1){
+        echo "<p style='color:red ; text-align:center;'>you have ".$data->pending." pending reservation.</p>";
+        }else
+        {
+        echo "<p style='color:red ; text-align:center;'>you have ".$data->pending." pending reservations.</p>";
+        }
+    }
+    if($data->lastdate==NULL){
+    echo "</br><p style='text-align:center'>This will be your first reservation</p>";
+    }else{
+        echo "</br><p style='text-align:center'>Your last reservation was:<br> ".$data->lastdate."</p>";
+    }
+    echo "</section>";
+
+}
+
+
 }

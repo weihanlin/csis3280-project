@@ -134,7 +134,7 @@ static function validator(){
                 $header = 1;
             }
             echo nl2br("Passwords do not match\n");
-        };
+        }
         }
 
 //check if name contains characters other than letters and spaces

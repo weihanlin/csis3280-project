@@ -93,4 +93,26 @@ class LocationDAO {
         self::$db->execute();
         return self::$db->resultSet();
     }
+
+    //Available location to reserve
+    static function availableLoc(){
+ 
+        $query = "SELECT DISTINCT s.LocationID, l.ShortName, 
+        (SELECT Paid
+         FROM Record as r
+         WHERE s.SpaceID = r.SpaceID and Paid=0 and s.LocationID = r.LocationID
+         ORDER BY RecordID
+         LIMIT 1
+        ) AS status
+        FROM Space as s JOIN Location as l
+        ON s.LocationID = l.LocationID
+        HAVING status IS NULL        
+        Order by l.ShortName;";
+
+        self::$db->query($query);
+        self::$db->execute($query);
+
+        return self::$db->resultSet();
+
+    }
 }
