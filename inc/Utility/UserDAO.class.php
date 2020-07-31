@@ -18,7 +18,7 @@ static function initialize(){
         self::$db->query($insert);
         self::$db->bind(':FullName', $user->getFullName());
         self::$db->bind(':Email',$user->getEmail());
-        self::$db->bind(':Password', $user->getPassword());
+        self::$db->bind(':Password', password_hash($user->getPassword(), PASSWORD_DEFAULT));
         self::$db->bind(':PhoneNumber', $user->getPhoneNumber());
         self::$db->bind(':Manager', false);
 
@@ -52,5 +52,21 @@ return self::$db->rowCount();
         self::$db->bind(':email', $email);
         self::$db->execute();
         return;
+    }
+    static function updateUser(User $u){
+        $update = "UPDATE User SET FullName = :fullname, PhoneNumber = :phonenumber WHERE Email = :email;";
+        self::$db->query($update);
+        self::$db->bind(':fullname', $u->getFullName());
+        self::$db->bind(':phonenumber', $u->getPhoneNumber());
+        self::$db->bind(':email', $_SESSION['email']);
+        self::$db->execute();
+        return true;
+    }
+    static function updatePassword($password){
+        $update = "UPDATE user SET Password = :password WHERE Email = :email;";
+        self::$db->query($update);
+        self::$db->bind(':password', password_hash($password, PASSWORD_DEFAULT));
+        self::$db->bind(':email', $_SESSION['email']);
+        self::$db->execute();
     }
 }
