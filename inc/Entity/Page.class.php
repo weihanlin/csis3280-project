@@ -297,8 +297,14 @@ class Page {
 
                             <select class="form-control" name="locationid">
                                 <?php
+
+                                    $selected = isset($_POST['locationid'])? $_POST['locationid']: "";
+
                                     foreach ($target as $item) {
-                                        echo "<option value={$item->getLocationID()}>{$item->getShortName()}</option>>";
+
+                                        echo ($item->getLocationID() == $selected) ?
+                                        "<option value={$item->getLocationID()} selected>{$item->getShortName()}</option>>":
+                                        "<option value={$item->getLocationID()}>{$item->getShortName()}</option>>";
                                     }
                                 ?>
                             </select>
