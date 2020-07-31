@@ -5,12 +5,6 @@ class Validate {
 
     static function validateLocation(Location $target){
 
-        $target->setLocationID(filter_var($target->getLocationID(),FILTER_SANITIZE_NUMBER_INT));
-        if(!filter_var($target->getLocationID(),FILTER_VALIDATE_INT) ||  $target->getLocationID() < 1) {
-            error_log("LocationID invalid:".$target->getLocationID()." ".__FILE__.":".__LINE__);
-            return false;
-        }
-
         $target->setShortName(filter_var($target->getShortName(), FILTER_SANITIZE_STRING));
         if($target->getShortName() == false || strlen($target->getShortName()) > 5
                 || preg_match_all('/(?![a-zA-Z\d])./', $target->getShortName())) {
@@ -105,51 +99,57 @@ class Validate {
     }
 
 
-    static function validator(){
-        $isCorrect = true;
-        $header = 0;
-
-            if(!filter_var($_POST['email'], FILTER_SANITIZE_EMAIL)){
-                $isCorrect = false;
-                if($header == 0){
-                    Page::header();
-                    $header = 1;
-                }
-                echo nl2br("Email is invalid");
-
-            }
-
-            if(strlen($_POST['password']) < 8){
-                $isCorrect = false;
-                if($header == 0){
-                    Page::header();
-                    $header = 1;
-                }
-                echo nl2br("Password must be longer than 8 characters\n");
-            }
-
-            if($_POST['password']!=$_POST['password_confirm']){
-                $isCorrect = false;
-                if($header == 0){
-                    Page::header();
-                    $header = 1;
-                }
-                echo nl2br("Passwords do not match\n");
-            };
-        
-
-
-        if (!preg_match("/^[a-zA-Z ]*$/",$_POST['fullname'])) {
+static function validator(){
+ //validator for registration
+    $isCorrect = true;
+    $header = 0;
+//check if email correct
+    if(isset($_POST['email'])){
+        if(!filter_var($_POST['email'], FILTER_SANITIZE_EMAIL)){
             $isCorrect = false;
             if($header == 0){
                 Page::header();
                 $header = 1;
             }
-            echo nl2br("Only letters and white space allowed in Full Name\n");
+            echo nl2br("Email is invalid");
+
+        }
+    }
+
+//check if password length is under 8
+        if(strlen($_POST['password']) < 8){
+            $isCorrect = false;
+            if($header == 0){
+                Page::header();
+                $header = 1;
+            }
+            echo nl2br("Password must be longer than 8 characters\n");
+        }
+        if(isset($_POST['password_confirm'])){
+//check if passwords match
+        if($_POST['password']!=$_POST['password_confirm']){
+            $isCorrect = false;
+            if($header == 0){
+                Page::header();
+                $header = 1;
+            }
+            echo nl2br("Passwords do not match\n");
+        }
         }
 
-        return $isCorrect;
+//check if name contains characters other than letters and spaces
+if(isset($_POST['fullname'])){
+    if (!preg_match("/^[a-zA-Z ]*$/",$_POST['fullname'])) {
+        $isCorrect = false;
+        if($header == 0){
+            Page::header();
+            $header = 1;
+        }
+        echo nl2br("Only letters and white space allowed in Full Name\n");
+      }
     }
+    return $isCorrect;
+  }
 }
 
 

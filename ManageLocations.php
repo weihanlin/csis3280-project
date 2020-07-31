@@ -8,6 +8,11 @@ require_once ("inc/Entity/Page.class.php");
 require_once ("inc/Utility/LocationDAO.class.php");
 require_once ("inc/Utility/PDOService.class.php");
 require_once ("inc/Utility/Validate.class.php");
+//for checking login session
+require_once("inc/Utility/LoginManager.class.php");
+session_start();
+LoginManager::verifyLogin();
+LoginManager::verifyAdmin();
 
 Page::$title = "Parking Space Management - Location";
 Page::header();
@@ -21,7 +26,11 @@ if(!empty($_POST) && isset($_POST['action']) && $_POST['action'] != 'search'){
     $note = Validate::validateLocationForm();
     if(count($note) > 0) {
         foreach ($note as $value) {
-            echo "<div>{$value}</div>";
+
+            echo "<div class='alert alert-warning alert-dismissible' role='alert'>"
+                ."<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>"
+                ."<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>"
+                ." {$value}</div>";
         }
     }
     else {

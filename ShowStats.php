@@ -2,6 +2,7 @@
 require_once ("inc/config.inc.php");
 require_once ("inc/Entity/Page.class.php");
 
+session_start();
 
 Page::$title="Parking Space Statistic";
 Page::header();
@@ -9,17 +10,22 @@ Page::header();
 
 ?>
 
-    <section id="scount">
-        <div id="spaceCount"></div>
-    </section>
-    <section id="savg">
-        <div id="spaceAvg"></div>
-    </section>
+
+    <div class="row" style="margin: auto">
+        <section id="scount" >
+            <div id="spaceCount"></div>
+        </section>
+    </div>
+    <div class="row" style="margin: auto">
+        <section id="savg">
+            <div id="spaceAvg"></div>
+        </section>
+    </div>
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script>
-        const margin = {top: 60, right: 60, bottom: 10, left: 120};
-        const width = 600 - margin.left - margin.right;
+        const margin = {top: 60, right: 60, bottom: 1, left: 120};
+        const width = 800 - margin.left - margin.right;
         const height = 400 - margin.top - margin.bottom;
 
         const svg = d3.selectAll("section div").append("svg")
@@ -64,10 +70,10 @@ Page::header();
                 .text((d)=>d.Count)
                 .attr("text-anchor","middle")
                 .attr("x", (d)=>xscale(d.Count) + 10)
-                .attr("y", (d)=>yscale(d.ShortName)+yscale.bandwidth()/2)
+                .attr("y", (d)=>yscale(d.ShortName)+yscale.bandwidth()-2)
                 .attr("fill","black");
 
-            xaxis.ticks(d3.max(json, (d) => d.Count),"f");
+            // xaxis.ticks(d3.max(json, (d) => d.Count),"f");
 
             const g_xaxis = d3.select("#spaceCount svg g").append("g").attr("class","x axis");
             const g_yaxis = d3.select("#spaceCount svg g").append("g").attr("class","y axis");
@@ -75,14 +81,15 @@ Page::header();
             g_xaxis.call(xaxis);
             g_yaxis.call(yaxis);
 
-            d3.select("#scount").insert("select","div").on("change", function () {
+            d3.select("#scount").insert("select","div")
+                .on("change", function () {
                 const sel = d3.select(this).node().value;
                 switch (sel){
                     case "Ascending":
-                        json.sort((a,b)=>d3.ascending(a.Count, b.Count));
+                        json.sort((a,b)=>d3.ascending(+a.Count, +b.Count));
                         break;
                     case "Descending":
-                        json.sort((a,b)=>d3.descending(a.Count, b.Count));
+                        json.sort((a,b)=>d3.descending(+a.Count, +b.Count));
                         break;
                     case "Alphabetical":
                         json.sort((a,b)=>a.ShortName.localeCompare(b.ShortName));
@@ -93,7 +100,7 @@ Page::header();
                 yscale.domain(json.map((d)=>d.ShortName));
 
                 rect.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName));
-                label.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName)+yscale.bandwidth()/2)
+                label.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName)+yscale.bandwidth()-2)
                     .attr("x",(d,i)=>xscale(d.Count) + 10);
                 g_yaxis.transition().duration(500).call(yaxis).selectAll(".tick");
 
@@ -128,7 +135,7 @@ Page::header();
                 .text((d)=>d3.format("$.2f")(d.Avg))
                 .attr("text-anchor","middle")
                 .attr("x", (d)=>xscale(d.Avg) + 30)
-                .attr("y", (d)=>yscale(d.ShortName)+yscale.bandwidth()/2)
+                .attr("y", (d)=>yscale(d.ShortName)+yscale.bandwidth()-2)
                 .attr("fill","black");
 
             xaxis.ticks(d3.max(json, (d) => parseFloat(d.Avg)), "f");
@@ -142,10 +149,10 @@ Page::header();
                 const sel = d3.select(this).node().value;
                 switch (sel){
                     case "Ascending":
-                        json.sort((a,b)=>d3.ascending(a.Avg, b.Avg));
+                        json.sort((a,b)=>d3.ascending(+a.Avg, +b.Avg));
                         break;
                     case "Descending":
-                        json.sort((a,b)=>d3.descending(a.Avg, b.Avg));
+                        json.sort((a,b)=>d3.descending(+a.Avg, +b.Avg));
                         break;
                     case "Alphabetical":
                         json.sort((a,b)=>a.ShortName.localeCompare(b.ShortName));
@@ -156,7 +163,7 @@ Page::header();
                 yscale.domain(json.map((d)=>d.ShortName));
 
                 rect.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName));
-                label.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName)+yscale.bandwidth()/2)
+                label.transition().duration(500).attr("y",(d,i)=>yscale(d.ShortName)+yscale.bandwidth() - 2)
                     .attr("x",(d,i)=>xscale(d.Avg) + 30);
                 g_yaxis.transition().duration(500).call(yaxis).selectAll(".tick");
 

@@ -13,10 +13,12 @@ session_start();
 
 LoginManager::verifyLogin();
 
-UserDAO::initialize();
+    UserDAO::initialize();
     $user = UserDAO::getUser($_SESSION['email']);
+    Page::$title = "User Profile";
     Page::header();
     Page::displayUserDetails($user);
+    ?><a href="UserEdit.php"> Edit Profile</a><br><a href="ChangePassword.php">Change Password</a><?php
     Page::footer();
 
 ?>
