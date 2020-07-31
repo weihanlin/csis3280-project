@@ -158,14 +158,15 @@ class Page {
                 <tbody id="restable">
                 <?php
                 foreach($data as $datum){
+                    $ucaddr = ucwords($datum->getAddress());
                     echo "<tr>";
                     echo "<td>{$datum->getLocationID()}</td>";
                     echo "<td>{$datum->getShortName()}</td>";
-                    echo "<td>{$datum->getAddress()}</td>";
+                    echo "<td>{$ucaddr}</td>";
                     echo "<td><a href=?action=edit&lid={$datum->getLocationID()}>Edit</a></td>";
                     echo "<td><a href='#' data-locid='{$datum->getLocationID()}'
                                         data-name='{$datum->getShortName()}'
-                                        data-addr='{$datum->getAddress()}'
+                                        data-addr='{$ucaddr}'
                                         data-href='?action=delete&lid={$datum->getLocationID()}'
                                         data-toggle='modal' data-target='#confirm-delete'>Delete</a></td>";
 
@@ -268,7 +269,7 @@ class Page {
                 </div>
                 <div class="form-group">
                     <label>Address</label>
-                    <input class="form-control" type="text" name="addr" value="<?= $target->getAddress() ?>">
+                    <input class="form-control" type="text" name="addr" value="<?= ucwords($target->getAddress()) ?>">
                 </div>
                 <div class="btn-group btn-group-justified" role="group">
                     <div class="btn-group" role="group">
