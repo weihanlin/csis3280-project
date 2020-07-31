@@ -467,4 +467,55 @@ class Page {
                         </section>';
               
                 }
+                    static function editUser(User $user)
+                {  ?>
+
+                    <section>
+                        <h2>Edit Profile - <?php echo $user->getFullName(); ?></h2>
+                        <form action="" method="post">
+                            <table>
+                            <tr>
+                                <td>Email</td>
+                                <td><?php echo $user->getEmail();?></td>
+                            <tr>
+                                <td align="right"><label for="fullname">Full Name</label></td>
+                                <td align="left"><input type="text" name="fullname" value="<?php echo $user->getFullName();?>" required></td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label for="phone">Phone Number (no hyphens)</label></td>
+                                <td align="left"><input type="tel" name="phonenumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" value="<?php echo $user->getPhoneNumber(); ?>" required></td>
+                            </tr>
+                            <tr>
+                                <td align="right"><label for="password">Enter your password to confirm changes</label></td>
+                                <td align="left"><input type="password" name="password" required></td>
+                            </tr>
+                            </table>
+
+                            <input type="submit" value="Update Profile">
+                        </form>
+                    </section>
+
+            <?php }
+            static function changePassword(){?>
+                <form action="" method="post">
+                <table>
+                    <tr>
+                        <td align="right"><label for="password_old">Current Password</label></td>
+                        <td align="left"><input type="password" name="password_old" required></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><label for="password">New Password</label></td>
+                        <td align="left"><input type="password" name="password" required></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><label for="password_confirm">Confirm Password</label></td>
+                        <td align="left"><input type="password" name="password_confirm" required></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><input type="submit" value="Change Password"></td>
+                    </tr>
+                </table>
+            </form>
+            <?php
+            }
 }
