@@ -40,7 +40,7 @@ class RecordDAO  {
             FROM Space as s JOIN Location as l
             ON s.LocationID = l.LocationID
             HAVING status IS NULL        
-            Order by l.LocationID, s.SpaceID;";
+            Order by l.ShortName, s.SpaceID;";
         }
         else{
             $selectAll="SELECT s.SpaceID, s.LocationID,l.ShortName,
@@ -54,7 +54,7 @@ class RecordDAO  {
             ON s.LocationID = l.LocationID
             WHERE l.LocationID = :fil
             HAVING status IS NULL        
-            Order by l.LocationID, s.SpaceID;";
+            Order by l.ShortName, s.SpaceID;";
         }
 
 

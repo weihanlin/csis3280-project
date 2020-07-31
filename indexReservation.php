@@ -82,10 +82,10 @@ $space = RecordDAO::getAvailables_Parking($opt);
 // Active reservation of User
 $last = RecordDAO::last_reservation($user->getId());
 
-// Note: You need to use the results from the corresponding DAO that gives you the reservation list
+// Print information about available parkings.
 Page::getSelectForm($locations, $opt);
 Page::statusUser($last, $user);
-Page::getOrderData($locations, $space);
+Page::getOrderData($locations, $space, $opt);
 
 
 Page::footer();
