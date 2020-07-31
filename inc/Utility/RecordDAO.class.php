@@ -73,7 +73,7 @@ class RecordDAO  {
             ON r.LocationID = l.LocationID
             JOIN Space as s
             ON r.LocationID = s.LocationID and r.SpaceID = s.SpaceID
-            WHERE UserID = 51
+            WHERE UserID = :id
             ORDER BY r.RecordID desc";
     
             self::$db->query($selectAll);
