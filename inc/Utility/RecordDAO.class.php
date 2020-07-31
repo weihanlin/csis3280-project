@@ -33,20 +33,20 @@ class RecordDAO  {
             $selectAll="SELECT s.SpaceID, s.LocationID,l.ShortName,
             (SELECT Paid
              FROM Record as r
-             WHERE s.SpaceID = r.SpaceID and Paid=0
+             WHERE s.SpaceID = r.SpaceID and Paid=0 and s.LocationID = r.LocationID
              ORDER BY RecordID
              LIMIT 1
             ) AS status
             FROM Space as s JOIN Location as l
             ON s.LocationID = l.LocationID
             HAVING status IS NULL        
-            Order by s.SpaceID;";
+            Order by l.LocationID, s.SpaceID;";
         }
         else{
             $selectAll="SELECT s.SpaceID, s.LocationID,l.ShortName,
             (SELECT Paid
              FROM Record as r
-             WHERE s.SpaceID = r.SpaceID and Paid=0
+             WHERE s.SpaceID = r.SpaceID and Paid=0 and s.LocationID = r.LocationID
              ORDER BY RecordID
              LIMIT 1
             ) AS status
@@ -54,7 +54,7 @@ class RecordDAO  {
             ON s.LocationID = l.LocationID
             WHERE l.LocationID = :fil
             HAVING status IS NULL        
-            Order by s.SpaceID;";
+            Order by l.LocationID, s.SpaceID;";
         }
 
 
@@ -72,8 +72,8 @@ class RecordDAO  {
             JOIN Location as L 
             ON r.LocationID = l.LocationID
             JOIN Space as s
-            ON r.SpaceID = s.SpaceID
-            WHERE UserID = :id
+            ON r.LocationID = s.LocationID and r.SpaceID = s.SpaceID
+            WHERE UserID = 51
             ORDER BY r.RecordID desc";
     
             self::$db->query($selectAll);
@@ -125,7 +125,7 @@ class RecordDAO  {
 
         //bind                
         self::$db->bind(':id', $id);
-        self::$db->bind(':total', $amount->temp_paid);
+        self::$db->bind(':total', sprintf('%.2f',$amount->temp_paid));
 
         //Execute query
         self::$db->execute();
@@ -153,7 +153,7 @@ class RecordDAO  {
         $selectAll="SELECT ((TIMESTAMPDIFF(HOUR,r.StartedAt, NOW())+1)*s.Price) as temp_paid
             from Record as r 
             JOIN Space as s
-            ON r.SpaceID = s.SpaceID
+            ON r.LocationID = s.LocationID and r.SpaceID = s.SpaceID
             WHERE RecordID = :id";
 
             self::$db->query($selectAll);

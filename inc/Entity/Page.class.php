@@ -415,7 +415,7 @@ class Page {
         </table>
     </form>
         <?php }
-    static function displayUsers(Array $user) {
+static function displayUsers(Array $user) {
                 ?>
 
                     <section>
@@ -459,7 +459,9 @@ class Page {
                         </section>';
               
                 }
+
 /*Reservation pages*/
+
 static function getSelectForm($locations,$selected=''){
     ?>
        <section class="form1">              
@@ -469,9 +471,20 @@ static function getSelectForm($locations,$selected=''){
                             <select name="loc" id="loc" size="4">
                                 <?php
                                     foreach($locations as $lo)  {
-                                    echo "<option value=\"".$lo->getLocationID()."\">".$lo->getShortName()."</option>";
-                                    }                                    
-                                    echo "<option value=\"all\" selected>All</option>";                                                                    
+                                        if($selected == $lo->getLocationID()){
+                                            echo "<option value=\"".$lo->getLocationID()."\" selected>".$lo->getShortName()."</option>";
+                                        }
+                                        else{
+                                            echo "<option value=\"".$lo->getLocationID()."\">".$lo->getShortName()."</option>";
+                                        }
+                                    
+                                    }  
+                                    if($selected=='all'||$selected==null){
+                                        echo "<option value=\"all\" selected>All</option>";                                                                    
+                                    }else{
+                                        echo "<option value=\"all\">ALL</option>";                                                                    
+                                    }
+                                    
                                 ?>
                             </select>
                             </div>
@@ -484,13 +497,37 @@ static function getSelectForm($locations,$selected=''){
 }
 
 
-static function currentReservation(){
-    //Colocar aqui codigo para mostrar situacion actual del usuario
-}
-
-
 static function getOrderData($locations, $spaces){
     ?>
+
+<!-- Start Reservation confirmation modal -->
+<div class="modal fade" id="confirm-reserve" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Paid</h4>
+                    </div>
+                
+                    <div class="modal-body">
+                        <p>You will make a reservation.</p>
+                        <p>Do you want to proceed?</p>
+
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-success btn-ok">Reserve</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- End of Modal -->
+
+
+
                 <!-- Start the page's data form -->
     <section class="main" style="width:70%">
 
@@ -509,7 +546,7 @@ static function getOrderData($locations, $spaces){
         <input type="text" id="id" name="id" maxlength="7" size="7" required>
         </td>
         <td>
-        <button type="submit" name="action" value="reserve">Reserve</button>        
+        <button type="submit" name="action" value="reserve" onclick="return confirm('Are you sure you want to reserve this space?');">Reserve</button>        
         </tr>
         <table>
         </table>
@@ -546,7 +583,7 @@ static function getOrderData($locations, $spaces){
                                     echo "<td>".$i."</td>";
                                     echo"<td>".$space->ShortName."</td>";
                                     echo"<td>".$space->getSpaceID()."</td>";
-                                    echo "<td><a href=\"".$_SERVER["PHP_SELF"]."?action=reserve&id=".$space->getSpaceID()."&lo=".$space->getLocationID()."\">Reserve</td>";
+                                    echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=reserve&id=".$space->getSpaceID()."&lo=".$space->getLocationID()."\" data-toggle=\"modal\" data-target=\"#confirm-reserve\">Reserve</td>";
                                     echo "</tr>";
                                     $i++;
                                 }
@@ -554,10 +591,20 @@ static function getOrderData($locations, $spaces){
 
                         ?>
                     </table>
-                    <!--<h3>Tienes una reservacion activa</h3>    -->
                     
             </section>  
-                
+
+            <!-- script for modal of creating a new reservation -->
+            <script>
+        $('#confirm-reserve').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+            
+            $('.debug-url').html('Reserve URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+        });
+    </script>
+         
+
+
     <?php   
         
 }
@@ -565,8 +612,62 @@ static function getOrderData($locations, $spaces){
 //Record module 
 static function getHistoryData($spaces, $catID=NULL){
 ?>
+    <!-- Start Delete confirmation modal -->
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                    </div>
+                
+                    <div class="modal-body">
+                        <p>You are about to delete the record, this procedure is irreversible.</p>
+                        <p>Do you want to proceed?</p>
+
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger btn-ok">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- End of Modal -->
+
+
+    <!-- Start Paid confirmation modal -->
+    <div class="modal fade" id="confirm-paid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Paid</h4>
+                    </div>
+                
+                    <div class="modal-body">
+                        <p>You will pay the reservation, this procedure is irreversible.</p>
+                        <p>Do you want to proceed?</p>
+
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary btn-ok">Pay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- End of Modal -->
+
+
             <!-- Start the page's data form -->
-            <section class="table" style="width:80%">
+            <section class="table" style="width:100%;">
                 
                 <h3>  
                     <?php
@@ -607,16 +708,16 @@ static function getHistoryData($spaces, $catID=NULL){
                                 
                                 echo"<td>".$space->getPaid()."</td>";
 
-                                if ($space->getPaid()=="Reservated"){
-                                    echo"<td>".$space->temp_paid."</td>";
+                                if ($space->getPaid()=="Reserved"){
+                                    echo"<td> $ ".sprintf('%.2f', $space->temp_paid)."</td>";
                                 }else{
-                                    echo"<td>".$space->getAmount()."</td>";    
+                                    echo"<td> $ ".sprintf('%.2f', $space->getAmount())."</td>";    
                                 }                                                                                            
 
-                                if($space->getPaid()=="Reservated"){
-                                    echo "<td><a href=\"".$_SERVER["PHP_SELF"]."?action=paid&id=".$space->getRecordID()."\" style=\"color:green; font-weight: bold;\">PAID</td>";
+                                if($space->getPaid()=="Reserved"){
+                                    echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=paid&id=".$space->getRecordID()."\" style=\"color:green; font-weight: bold;\" data-toggle=\"modal\" data-target=\"#confirm-paid\">PAID</td>";
                                 }else{
-                                    echo "<td><a href=\"".$_SERVER["PHP_SELF"]."?action=delete&id=".$space->getRecordID()."\" style=\"color:red; font-weight: bold;\">DELETE</td>";
+                                    echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=delete&id=".$space->getRecordID()."\" style=\"color:red; font-weight: bold;\" data-toggle=\"modal\" data-target=\"#confirm-delete\">DELETE</td>";
                                 }
                                 
                                 echo "</tr>";
@@ -627,8 +728,23 @@ static function getHistoryData($spaces, $catID=NULL){
 
                     ?>
                 </table>
-                <!--<h3>Tienes una reservacion activa</h3>    -->
+
             </section>  
+
+            <!-- script for modal of update and elimination of reservation -->
+    <script>
+        $('#confirm-delete').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+            
+            $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+        });
+
+        $('#confirm-paid').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+            
+            $('.debug-url').html('Paid URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+        });
+    </script>
             
 <?php   
     
@@ -640,7 +756,7 @@ static function statusUser(Record $data, User $user){
     
     echo "</br><p style='text-align:center'>Welcome back ".$user->getFullName()."</p>";
     if($data->pending==0){
-        echo "<p style='color:green; text-align:center;'>No tienes pendientes</p>";
+        echo "<p style='color:green; text-align:center;'>You don't have pending reservations</p>";
     }else{
         if($data->pending==1){
         echo "<p style='color:red ; text-align:center;'>you have ".$data->pending." pending reservation.</p>";

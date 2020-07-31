@@ -59,11 +59,11 @@ Class Record    {
 
         function getPaid():string{
             if($this->EndedAt==null || $this->EndedAt=="" ){
-                $this->Paid = "Reservated";
+                $this->Paid = "Reserved";
             }
             
             if($this->Paid == 1){
-                $this->Paid = "Paided";
+                $this->Paid = "Paid";
             }
             return $this->Paid;
         }            

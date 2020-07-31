@@ -73,7 +73,7 @@ Page::header();
 
 
 // List all location
-$locations = LocationDAO::getLocations();
+$locations = LocationDAO::availableLoc();
 
 
 // List of avaliable parking
@@ -83,7 +83,7 @@ $space = RecordDAO::getAvailables_Parking($opt);
 $last = RecordDAO::last_reservation($user->getId());
 
 // Note: You need to use the results from the corresponding DAO that gives you the reservation list
-Page::getSelectForm($locations);
+Page::getSelectForm($locations, $opt);
 Page::statusUser($last, $user);
 Page::getOrderData($locations, $space);
 
