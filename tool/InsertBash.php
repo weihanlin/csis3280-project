@@ -99,7 +99,8 @@ else {
     echo "Usage: php InsertBash.php -[u|l|s] FILE_PATH\n";
     echo "  u: user file\n";
     echo "  l: location file\n";
-    echo "  s: space file";
+    echo "  s: space file\n";
+    echo "or php InsertBash.php -a";
 }
 
 
@@ -107,8 +108,7 @@ function inserUser($temp) {
     $target = new User();
     $target->setFullName(trim($temp[0]));
     $target->setEmail(trim($temp[1]));
-    //password_hash should be in DAO
-    $target->setPassword(password_hash(trim($temp[2]),PASSWORD_DEFAULT));
+    $target->setPassword(trim($temp[2]));
     $target->setPhoneNumber(trim($temp[3]));
     UserDAO::createUser($target);
 
