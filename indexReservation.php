@@ -27,15 +27,19 @@ RecordDAO::initialize("Record");
 LocationDAO::initialize("Location");
 
 UserDAO::initialize();
+
+//return if the session does not exist
+if(!isset($_SESSION['email'])){
+  return;
+}
+
+  //Get user data
 $user = UserDAO::getUser($_SESSION['email']);
 
 
-
-//If there was post data from an edit form then process it
-//Accion para crear y para editar documento
-
 $opt = NULL;
 
+//Evaluate POST action
 if (!empty($_POST)) {               
     
     if ($_POST["action"] == "reserve")  {
@@ -55,7 +59,7 @@ if (!empty($_POST)) {
               
 }
 
-//Evaluating the GET
+//Evaluating the GET action
 if (isset($_GET["action"]))  {
     if($_GET["action"]=="reserve") {        
             $nb = new Record();
@@ -67,6 +71,7 @@ if (isset($_GET["action"]))  {
       }
 }
 
+// Print header
 Page::$title="Douglas' parking APP";
 Page::header();
 
@@ -87,7 +92,11 @@ Page::getSelectForm($locations, $opt);
 Page::statusUser($last, $user);
 Page::getOrderData($locations, $space, $opt);
 
-
+//Print footer
 Page::footer();
+
+
+
+
 
 ?>

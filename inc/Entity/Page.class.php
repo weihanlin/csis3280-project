@@ -568,7 +568,7 @@ static function getOrderData($locations, $spaces,$selected=''){
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Confirm Paid</h4>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Reservation</h4>
                     </div>
 
                     <div class="modal-body">
@@ -686,7 +686,7 @@ static function getHistoryData($spaces, $catID=NULL){
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Deletion</h4>
                     </div>
 
                     <div class="modal-body">
@@ -713,7 +713,7 @@ static function getHistoryData($spaces, $catID=NULL){
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Confirm Paid</h4>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Payment</h4>
                     </div>
 
                     <div class="modal-body">
@@ -782,7 +782,7 @@ static function getHistoryData($spaces, $catID=NULL){
                                 }
 
                                 if($space->getPaid()=="Reserved"){
-                                    echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=paid&id=".$space->getRecordID()."\" style=\"color:green; font-weight: bold;\" data-toggle=\"modal\" data-target=\"#confirm-paid\">PAID</td>";
+                                    echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=paid&id=".$space->getRecordID()."\" style=\"color:green; font-weight: bold;\" data-toggle=\"modal\" data-target=\"#confirm-paid\">PAY</td>";
                                 }else{
                                     echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=delete&id=".$space->getRecordID()."\" style=\"color:red; font-weight: bold;\" data-toggle=\"modal\" data-target=\"#confirm-delete\">DELETE</td>";
                                 }

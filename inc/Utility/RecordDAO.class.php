@@ -114,6 +114,7 @@ class RecordDAO  {
 
     }   
 
+    //Update reservation of the user
     static function paid_Reservation($id){
         
         //Calculate amount to paid.
@@ -133,8 +134,9 @@ class RecordDAO  {
 
     }
 
+    //Delete record of User
     static function delete_Record($id){
-        //UPDATE RECORD to User
+        //SQL Query
         $sql="DELETE FROM Record where RecordID=:id;";
         self::$db->query($sql);
 
@@ -164,6 +166,7 @@ class RecordDAO  {
 
     }
     
+    //Getting last reservation of User
     static function last_reservation($id){
 
         $last="SELECT COUNT(RecordID) as pending, 
