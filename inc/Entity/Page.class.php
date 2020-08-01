@@ -565,7 +565,7 @@ static function getSelectForm($locations,$selected=''){
 }
 
 
-static function getOrderData($locations, $spaces){
+static function getOrderData($locations, $spaces,$selected=''){
     ?>
 
 <!-- Start Reservation confirmation modal -->
@@ -575,7 +575,7 @@ static function getOrderData($locations, $spaces){
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Confirm Paid</h4>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Reservation</h4>
                     </div>
 
                     <div class="modal-body">
@@ -605,9 +605,15 @@ static function getOrderData($locations, $spaces){
         <td><label for="lo">Choose your Location:</label>
         <select name="lo" id="lo">
         <?php
-            foreach($locations as $lo)  {
-            echo "<option value=\"".$lo->getLocationID()."\">".$lo->getShortName()."</option>";
-            }
+                                    foreach($locations as $lo)  {
+                                        if($selected == $lo->getLocationID()){
+                                            echo "<option value=\"".$lo->getLocationID()."\" selected>".$lo->getShortName()."</option>";
+                                        }
+                                        else{
+                                            echo "<option value=\"".$lo->getLocationID()."\">".$lo->getShortName()."</option>";
+                                        }
+
+                                    }
             ?>
         </select></td>
         <td>  <label for="id"> Type your parking space:</label>
@@ -622,7 +628,7 @@ static function getOrderData($locations, $spaces){
 
                     <h3 style="text-align:center;">
                         <?php
-                            echo "All Parking Available :"
+                            echo "All Available Parkings :"
                         ?>
                     </h3>
                     <table>
@@ -687,7 +693,7 @@ static function getHistoryData($spaces, $catID=NULL){
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Deletion</h4>
                     </div>
 
                     <div class="modal-body">
@@ -714,7 +720,7 @@ static function getHistoryData($spaces, $catID=NULL){
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Confirm Paid</h4>
+                        <h4 class="modal-title" id="myModalLabel">Confirm Payment</h4>
                     </div>
 
                     <div class="modal-body">
@@ -783,7 +789,7 @@ static function getHistoryData($spaces, $catID=NULL){
                                 }
 
                                 if($space->getPaid()=="Reserved"){
-                                    echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=paid&id=".$space->getRecordID()."\" style=\"color:green; font-weight: bold;\" data-toggle=\"modal\" data-target=\"#confirm-paid\">PAID</td>";
+                                    echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=paid&id=".$space->getRecordID()."\" style=\"color:green; font-weight: bold;\" data-toggle=\"modal\" data-target=\"#confirm-paid\">PAY</td>";
                                 }else{
                                     echo "<td><a data-href=\"".$_SERVER["PHP_SELF"]."?action=delete&id=".$space->getRecordID()."\" style=\"color:red; font-weight: bold;\" data-toggle=\"modal\" data-target=\"#confirm-delete\">DELETE</td>";
                                 }

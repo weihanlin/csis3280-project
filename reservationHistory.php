@@ -27,14 +27,14 @@ LoginManager::verifyLogin();
 RecordDAO::initialize("Record");
 LocationDAO::initialize("Location");
 UserDAO::initialize();
+
+//return if the session does not exist
+if(!isset($_SESSION['email'])){
+  return;
+}
+
+//Get user data
 $user = UserDAO::getUser($_SESSION['email']);
-
-
-//temporary user information
-$name = "Douglas College";
-$idUser = 1;
-////
-
 
 
 //Evaluating the GET
@@ -53,17 +53,14 @@ if (isset($_GET["action"]))  {
       }
 }
 
+//Print header
 Page::$title="History Module";
 Page::header();
 
 
 
-
 //List of reservartion records
 $space = RecordDAO::getRecords($user->getId());
-
-
-// Show Menu of app
 
 // show Data
 Page::getHistoryData($space);
