@@ -24,9 +24,9 @@ if (!empty($_POST['email'])) {
             $_SESSION['email'] = $user->getEmail();
             if ($user->getManager()) {
                 $_SESSION['isAdmin'] = true;
-                header("Location: UserProfile.php");
+                header("Location: indexReservation.php");
             } else {
-                header("Location: UserProfile.php");
+                header("Location: indexReservation.php");
             }
         } else {
             Page::header();
