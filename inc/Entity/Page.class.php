@@ -27,13 +27,14 @@ class Page {
                         <a class="navbar-brand" href="#">Parking System</a>
                     </div>
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="indexReservation.php">Home</a></li>
-                        <li><a href="UserProfile.php">Profile</a></li>
-
+                        <li <?php if(basename($_SERVER["PHP_SELF"]) == "indexReservation.php"){echo "class = \"active\"";} ?>><a href="indexReservation.php">Home</a></li>
+                        <?php if(isset($_SESSION['email'])) {?>
+                        <li <?php if(basename($_SERVER["PHP_SELF"])== "UserProfile.php"||basename($_SERVER["PHP_SELF"]) == "ChangePassword.php" || basename($_SERVER["PHP_SELF"]) == "UserEdit.php"){echo "class = \"active\"";} ?>><a href="UserProfile.php">Profile</a></li>
+                        <?php } ?>
                         <!--  Hide this option if this session is not admin   -->
                         <?php if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']==true) { ?>
                         
-                        <li class="dropdown">
+                        <li class="dropdown <?php if(basename($_SERVER["PHP_SELF"]) == "AdminProfile.php"||basename($_SERVER["PHP_SELF"]) == "ManageLocations.php" || basename($_SERVER["PHP_SELF"]) == "ManageSpaces.php"){echo "active";} ?>">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -45,8 +46,8 @@ class Page {
                         <?php } ?>
                         <!--   End   -->
 
-                        <li><a href="ShowStats.php">Statistic</a></li>
-                        <li><a href="reservationHistory.php">History</a></li>
+                        <li <?php if(basename($_SERVER["PHP_SELF"]) == "ShowStats.php"){echo "class=\"active\"";} ?>><a href="ShowStats.php">Statistic</a></li>
+                        <li <?php if(basename($_SERVER["PHP_SELF"]) == "reservationHistory.php"){echo "class=\"active\"";} ?>><a href="reservationHistory.php">History</a></li>
                     </ul>
                     <!-- Hide if not logged in -->
                     <?php if(isset($_SESSION['email'])) {?>
