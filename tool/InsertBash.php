@@ -1,5 +1,14 @@
 <?php
 
+/*
+ *  Usage: php InsertBash.php -[u|l|s] FILE_PATH
+      -u: user file
+      -l: location file
+      -s: space file
+    Or insert all data with: php InsertBash.php -a
+ *
+ * */
+
 require_once ("../inc/config.inc.php");
 require_once ("../inc/Entity/Location.class.php");
 require_once ("../inc/Utility/LocationDAO.class.php");
@@ -103,7 +112,7 @@ else {
     echo "or php InsertBash.php -a";
 }
 
-
+//insert User data
 function inserUser($temp) {
     $target = new User();
     $target->setFullName(trim($temp[0]));
@@ -118,6 +127,7 @@ function inserUser($temp) {
     return true;
 }
 
+//insert Space data
 function insertSpace($temp) {
     $target = new Space();
     $target->setLocationID(trim($temp[0]));
@@ -134,6 +144,7 @@ function insertSpace($temp) {
     return true;
 }
 
+//insert Location data
 function insertLocation($temp) {
     $target = new Location();
     $target->setShortName(trim($temp[0]));

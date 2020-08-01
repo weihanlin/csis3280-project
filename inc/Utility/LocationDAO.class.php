@@ -3,10 +3,12 @@
 class LocationDAO {
     private static $db;
 
+    //init PDO for Location
     static function initialize() {
         self::$db = new PDOService("Location");
     }
 
+    //get list from location
     static function getLocations() {
 
         $query = "SELECT * FROM Location";
@@ -17,6 +19,7 @@ class LocationDAO {
 
     }
 
+    //get location by id
     static function getLocation(int $lid) {
         $q = "SELECT * FROM Location WHERE LocationID =:lid";
         self::$db->query($q);
@@ -26,6 +29,7 @@ class LocationDAO {
         return self::$db->singleResult();
     }
 
+    //insert  data to location
     static function createLocation(Location $location) {
 
         //Validate the input value is clean
@@ -44,6 +48,7 @@ class LocationDAO {
         return self::$db->rowCount();
     }
 
+    //update location data
     static function updateLocation(Location $location) {
 
         //Validate the input value is clean
@@ -60,6 +65,7 @@ class LocationDAO {
         return self::$db->rowCount();
     }
 
+    //delete data from location
     static function delLocation(int $lid) {
         $q = "DELETE FROM Location WHERE LocationID =:lid";
         self::$db->query($q);
@@ -67,6 +73,7 @@ class LocationDAO {
         self::$db->execute();
     }
 
+    //search location by specific condition
     static function findLocations($name, $addr) {
 
         $name = filter_var($name,FILTER_SANITIZE_STRING);

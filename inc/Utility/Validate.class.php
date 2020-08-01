@@ -2,7 +2,7 @@
 
 class Validate {
 
-
+    //validate location data
     static function validateLocation(Location $target){
 
         $target->setShortName(filter_var($target->getShortName(), FILTER_SANITIZE_STRING));
@@ -26,7 +26,7 @@ class Validate {
 
     }
 
-
+    //validate space data
     static function validateSpace(Space $target){
 
         $target->setLocationID(filter_var($target->getLocationID(),FILTER_SANITIZE_NUMBER_INT));
@@ -52,7 +52,7 @@ class Validate {
 
     }
 
-
+    //validate space form data
     static function validateSpaceForm() {
         $error = array();
 
@@ -79,7 +79,7 @@ class Validate {
         return $error;
     }
 
-
+    //validate location form data
     static function validateLocationForm() {
         $error = array();
 

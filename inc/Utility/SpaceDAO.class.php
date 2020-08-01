@@ -2,10 +2,12 @@
 class SpaceDAO{
     private static $db;
 
+    //init PDO for Space
     static function initialize() {
         self::$db = new PDOService("Space");
     }
 
+    //insert data to Space
     static function createSpace(Space $space) {
 
         //Validate the input value is clean
@@ -25,6 +27,7 @@ class SpaceDAO{
         return self::$db->rowCount();
     }
 
+    //get the specific Space
     static function getSpace(int $sid, int $lid) {
         $q = "SELECT * FROM Space WHERE SpaceID =:sid AND LocationID =:lid";
         self::$db->query($q);
@@ -35,6 +38,7 @@ class SpaceDAO{
         return self::$db->singleResult();
     }
 
+    //delete the specific Space
     static function delSpace(int $sid, int $lid) {
         $q = "DELETE FROM Space WHERE SpaceID =:sid AND LocationID =:lid";
         self::$db->query($q);
@@ -43,6 +47,7 @@ class SpaceDAO{
         self::$db->execute();
     }
 
+    //get list from Space
     static function getSpaceList() {
         $q = "SELECT * FROM Space as s JOIN Location as l ON s.LocationID = l.LocationID ORDER BY s.LocationID ,s.SpaceID";
         self::$db->query($q);
@@ -51,7 +56,7 @@ class SpaceDAO{
 
     }
 
-
+    //update the space
     static function updateSpace(Space $s) {
 
         //Validate the input value is clean
@@ -68,7 +73,7 @@ class SpaceDAO{
         return self::$db->rowCount();
     }
 
-
+    //search spaces whit specific condition
     static function findSpaces($lid, $sid, $price) {
 
         $lid = filter_var($lid, FILTER_SANITIZE_NUMBER_INT);
