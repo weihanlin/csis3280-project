@@ -11,7 +11,7 @@ require_once("inc/Utility/Validate.class.php");
 
 session_start();
 
-LoginManager::verifyLogin();
+if(LoginManager::verifyLogin()){
 UserDAO::initialize();
 Page::$title = "User Profile";
 $user = UserDAO::getUser($_SESSION['email']);
@@ -47,5 +47,6 @@ else{
     Page::header();
     Page::editUser($user);
     Page::footer();
+}
 }
 ?>

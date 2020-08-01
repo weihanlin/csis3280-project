@@ -10,7 +10,7 @@ require_once("inc/Utility/UserDAO.class.php");
 
 
 session_start();
-LoginManager::verifyLogin();
+if(LoginManager::verifyLogin()){
 LoginManager::verifyAdmin();
 
     UserDAO::initialize();
@@ -30,5 +30,5 @@ LoginManager::verifyAdmin();
     $user = UserDAO::getAllUsers();
     Page::displayUsers($user);
     Page::footer();
-
+}
 ?>

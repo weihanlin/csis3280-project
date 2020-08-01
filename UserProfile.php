@@ -11,7 +11,7 @@ require_once("inc/Utility/UserDAO.class.php");
 
 session_start();
 
-LoginManager::verifyLogin();
+if(LoginManager::verifyLogin()){
 
     UserDAO::initialize();
     $user = UserDAO::getUser($_SESSION['email']);
@@ -20,5 +20,5 @@ LoginManager::verifyLogin();
     Page::displayUserDetails($user);
     ?><a href="UserEdit.php"> Edit Profile</a><br><a href="ChangePassword.php">Change Password</a><?php
     Page::footer();
-
+}
 ?>

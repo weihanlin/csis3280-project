@@ -11,7 +11,7 @@ require_once("inc/Utility/Validate.class.php");
 
 session_start();
 
-LoginManager::verifyLogin();
+if(LoginManager::verifyLogin()){
 UserDAO::initialize();
 Page::$title = "Change your password";
 $user = UserDAO::getUser($_SESSION['email']);
@@ -42,5 +42,6 @@ else{
     Page::header();
     Page::changePassword();
     Page::footer();
+}
 }
 ?>
