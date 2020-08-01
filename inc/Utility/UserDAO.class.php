@@ -4,12 +4,12 @@ class UserDAO   {
 
 
 private static $db;
-
+//initialize PDO
 static function initialize(){
     self::$db = new PDOService("User");
 } 
     
-
+//creates a user in the database
     static function createUser(User $user){
 
         $insert = "INSERT INTO User (FullName, Email, Password, PhoneNumber, Manager)
@@ -26,7 +26,7 @@ static function initialize(){
 return self::$db->rowCount();
     }
 
-
+//gets a user from the database
     static function getUser(string $email)  {
 
         $select = "SELECT * FROM User WHERE email = :email;";
@@ -36,7 +36,7 @@ return self::$db->rowCount();
         return self::$db->singleResult();
     }
 
-
+//gets all users from the database
     static function getAllUsers()  {
         
         $select = "SELECT * FROM User ORDER BY UserID";
@@ -44,7 +44,7 @@ return self::$db->rowCount();
         self::$db->execute();
         return self::$db->resultSet();
     }
-    
+    //sets the admin status of a user
     static function setAdmin(string $email, bool $manager){
         $select = "UPDATE User SET Manager = :manager WHERE email = :email;";
         self::$db->query($select);
@@ -53,6 +53,7 @@ return self::$db->rowCount();
         self::$db->execute();
         return;
     }
+    //updates user info 
     static function updateUser(User $u){
         $update = "UPDATE User SET FullName = :fullname, PhoneNumber = :phonenumber WHERE Email = :email;";
         self::$db->query($update);
@@ -62,6 +63,7 @@ return self::$db->rowCount();
         self::$db->execute();
         return true;
     }
+    //updates a user's password
     static function updatePassword($password){
         $update = "UPDATE user SET Password = :password WHERE Email = :email;";
         self::$db->query($update);

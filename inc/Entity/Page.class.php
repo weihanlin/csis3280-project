@@ -369,7 +369,7 @@ class Page {
 
         <?php
     }
-    
+    //display a user's information
     static function displayUserDetails(User $user) { ?>
         <h1>User Details</h1>
         <div>
@@ -379,7 +379,7 @@ class Page {
 
         </div>
         <?php }
-
+    //display login form
     static function displayLogin() { ?>
     <form action="" method="POST">
     <h2>Please sign in</h2>
@@ -394,6 +394,7 @@ class Page {
         Don't have an account? <a href="<?php echo 'parkingRegistration.php'?>">Click here</a> to register.
 
     <?php }
+    //displays registration form
     static function displayRegistrationForm() { ?>
     
         Have an account?<a href="<?php echo "parkingLogin.php"?>"> Please login</a>.
@@ -430,6 +431,7 @@ class Page {
         </table>
     </form>
         <?php }
+    // displays all users and their Admin status
 static function displayUsers(Array $user) {
                 ?>
  <!--   For Admins Only   -->
@@ -477,6 +479,7 @@ static function displayUsers(Array $user) {
                         </section>';
               
                 }
+    // Displays user editor page
                    static function editUser(User $user)
                 {  ?>
 
@@ -506,6 +509,7 @@ static function displayUsers(Array $user) {
                     </section>
 
             <?php }
+    // displays change password page
             static function changePassword(){?>
                 <form action="" method="post">
                 <table>
