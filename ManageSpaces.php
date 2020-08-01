@@ -13,8 +13,8 @@ require_once ("inc/Utility/Validate.class.php");
 //for checking login session
 require_once("inc/Utility/LoginManager.class.php");
 session_start();
-LoginManager::verifyLogin();
-LoginManager::verifyAdmin();
+if(LoginManager::verifyLogin() == false || LoginManager::verifyAdmin() == false )
+    return;
 
 
 Page::$title = "Parking Space Management - Space";
