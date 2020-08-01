@@ -418,7 +418,7 @@ class Page {
         </tr>
         <tr>
             <td align="right"><label for="phone">Phone Number (no hyphens)</label></td>
-            <td align="left"><input type="tel" name="phonenumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}"></td>
+            <td align="left"><input type="tel" name="phonenumber" pattern="[0-9]{10}"></td>
         </tr>
         <tr>
         </tr>
