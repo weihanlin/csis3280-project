@@ -58,13 +58,13 @@ Page::$title="History Module";
 Page::header();
 
 
-
 //List of reservartion records
 $space = RecordDAO::getRecords($user->getId());
 
 // show Data
 Page::getHistoryData($space);
 
+//Print footer
 Page::footer();
 
 ?>

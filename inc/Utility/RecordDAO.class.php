@@ -25,7 +25,7 @@ class RecordDAO  {
         self::$db = new PDOService($className); 
     }
 
-    //Get Available space to park
+    //Get Available space to park --> Read of CRUD
     static function getAvailables_Parking($filter = null) : Array {
 
 
@@ -64,7 +64,7 @@ class RecordDAO  {
         return self::$db->resultSet();
     }
 
-    //Get record per user
+    //Get record per user --> Read of CRUD
     static function getRecords($user) : Array {
             //
             $selectAll="SELECT r.*, l.ShortName, ((TIMESTAMPDIFF(HOUR,r.StartedAt, NOW())+1)*s.Price) as temp_paid
@@ -85,7 +85,7 @@ class RecordDAO  {
     
     }
     
-    //Reservate a Space
+    //Reservate a Space -- CREATE of CRUD
     static function reserved(Record $nb):int{
             // QUERY BIND EXECUTE RETURN
         
@@ -114,7 +114,7 @@ class RecordDAO  {
 
     }   
 
-    //Update reservation of the user
+    //Update reservation of the user --> UPDATE of CRUD
     static function paid_Reservation($id){
         
         //Calculate amount to paid.
@@ -134,7 +134,7 @@ class RecordDAO  {
 
     }
 
-    //Delete record of User
+    //Delete record of User --> DELETE of CRUD
     static function delete_Record($id){
         //SQL Query
         $sql="DELETE FROM Record where RecordID=:id;";
@@ -149,7 +149,7 @@ class RecordDAO  {
 
     }
 
-    //Get value to pay
+    //Get value to pay -- Calculate value
     static function payment($id){
 
         $selectAll="SELECT ((TIMESTAMPDIFF(HOUR,r.StartedAt, NOW())+1)*s.Price) as temp_paid
@@ -166,7 +166,7 @@ class RecordDAO  {
 
     }
     
-    //Getting last reservation of User
+    //Getting last reservation of User --> Read of CRUD
     static function last_reservation($id){
 
         $last="SELECT COUNT(RecordID) as pending, 
